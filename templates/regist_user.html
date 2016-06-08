@@ -1,0 +1,24 @@
+<h3>회원 가입</h3>
+<form method="POST" action="{{ url_for('regist_user') }}">
+    <div>{{ form.userid.label }}: {{ form.userid() }}</div>
+    <div>{{ form.firstname.label }}: {{ form.firstname() }}</div>
+    <div>{{ form.lastname.label }}: {{ form.lastname() }}</div>
+    <div>{{ form.nickname.label }}: {{ form.nickname() }}</div>
+    <div>{{ form.password.label }}: {{ form.password() }}</div>   
+    <div>{{ form.emailaddr.label }}: {{ form.emailaddr() }}</div>
+    <div>{{ form.accept_rules.label }}: {{ form.accept_rules() }}</div>
+    <div>{{ form.submit() }}</div>
+
+    {% if form.errors %}
+    <ul class="errors">
+        {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+            {% for error in field_errors %}
+                <li>{{ form[field_name].label }}: {{ error }}</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+	{% endif %}
+
+	{% if err %}<p class=error><strong>Error:</strong> {{ err }}{% endif %}
+</form>
+
