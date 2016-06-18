@@ -1,0 +1,30 @@
+{%extends "layout.html"%}
+{%block body%}
+<h1>{{ name }}</h1>
+<div class="row">
+  <div class="col-md-3">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>타이틀</th>
+          <th>작성자</th>
+          <th>답변</th>
+          <th>조회</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for thread in threads %}
+          <tr>
+            <td><a href="{{ url_for('show_thread', id=thread.id) }}">{{ thread.title }}</a></td>
+            <td>{{ thread.author_name }}</td>
+            <td>{{ thread.replies }}</td> 
+            <td>{{ thread.views }}</td>
+          </tr>
+          {% else %}
+          <em>믿을 수 없네요. 쓰레드가 하나도 없어요.</em>
+          {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>  
+{% endblock %}

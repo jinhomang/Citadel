@@ -16,22 +16,13 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
-
-<div class=page>
-  <a href="{{url_for('main')}}"><h1>Citadel</h1></a>
+  <h1> 나의 시타델 프로젝트 </h1>
   {% if not session.user_info %}
-  <div>
-    <a href="{{ url_for('regist_user') }}"class="btn btn-default">Sign up</a>
-  </div>
-  {% endif %}
-  </br>
-  <div>
-  {% if not session.user_info %}
-    <a href="{{ url_for('log_in') }}" class="btn btn-primary">Sign in</a>
+  <a href="{{ url_for('login') }}" class="btn btn-sm btn-success">로그인</a>
   {% else %}
-    <a href="{{ url_for('log_out') }}" class="btn btn-default">log out</a>
+  안녕하세요, {{ session.user_info.name}} 님.
+  <a href="{{ url_for('logout') }}" class="btn btn-sm btn-normal">로그아웃</a>
   {% endif %}
-  </div>
 
   {% block body %} 
   {% endblock %}

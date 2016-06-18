@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block body %}
+  <ul>
+    <li><h4>{{ thread.title }}</h4>
+  </ul>
+  {% for msg in messages %}
+  	{{ msg.date }}
+  	{{ msg.content }}
+  	{{ msg.date }}
+  	{{ msg.author_id }}
+  	<br/>
+  {% else %}
+  	노 메시지.	 <br/>
+  {% endfor %}
+  <a href="{{ url_for('main') }}">뒤로</a> 
+{% endblock %}
