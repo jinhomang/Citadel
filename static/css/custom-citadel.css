@@ -1,0 +1,19 @@
+/* Custom page CSS*/
+.message-profile {
+  max-height: 50px;
+  max-width: 50px;
+}
+.message-content {
+  min-height: 70px;
+}
+
+@media (min-width: 992px) { 
+  .message-content {
+    min-height: 110px;
+  }
+  .message-profile {
+    max-height: 96px;
+    max-width: 96px;
+  }
+}
+

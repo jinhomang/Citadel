@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block body %}
+	{% if session.user_info %}
+	<form action="{{ url_for('update_message', thread_id=thread_id, message_id=message_id) }}" method=post>
+		<div>{{ form.content.label }}: {{ form.content() }}</a></div>
+		<span>{{ form.submit() }}</span>
+		<span><a href="{{ url_for('show_thread', id=thread_id) }}">취소</a></span>
+	</form>
+	{% else %}
+		해당 글을 수정할 수 없습니다.
+	{% endif %}
+
+{% endblock %}

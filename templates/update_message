@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block body %}
+  {% if session.user_info %}
+  <form action="{{ url_for('update_post',id=id) }}" method=post>
+   <div>{{ form.title.label }}: {{ form.title() }}</a></div>
+   <div>{{ form.text.label }}: {{ form.text() }}</div>   
+   <div>{{ form.submit() }}</div>
+   </form>
+  {% else %}
+  
+  {% endif %}
+{% endblock %}

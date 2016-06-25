@@ -7,13 +7,13 @@
     <div>{{ form.submit() }}</div>
 
     {% if form.errors %}
-    <ul class="error">
-        {% for field_name, field_errors in form.errors|dictsort if field_errors %}
-            {% for error in field_errors %}
-            <li>{{ form[field_name].label }}: {{ error }}</li>
+        <ul class="error">
+            {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+                {% for error in field_errors %}
+                  <li>{{ form[field_name].label }}: {{ error }}</li>
+                {% endfor %}
             {% endfor %}
-        {% endfor %}
-    </ul>
+        </ul>
     {% endif %}
 
     {% if err %}<p class="error"><strong>에:</strong> {{ err }}{% endif %}

@@ -1,16 +1,57 @@
 {% extends "layout.html" %}
 {% block body %}
-  <ul>
-    <li><h4>{{ thread.title }}</h4>
-  </ul>
-  {% for msg in messages %}
-  	{{ msg.date }}
-  	{{ msg.content }}
-  	{{ msg.date }}
-  	{{ msg.author_id }}
-  	<br/>
-  {% else %}
-  	노 메시지.	 <br/>
-  {% endfor %}
-  <a href="{{ url_for('main') }}">뒤로</a> 
+<table class="table table-striped">
+	<tr>
+		<td><h3 class="panel-title">{{ thread.title }}</h3></td>
+	</tr>
+	{% for (msg, author) in messages %}
+  	<tr>
+  		<td>
+  			<br/>
+	        <div class="row row-message">
+	        	<div class="col-xs-12 col-md-2">		        		
+	        		<div class="row">
+	        			<div class="col-xs-12 col-md-12">{{ author.nickname }}</div>
+						<div class="col-xs-3 col-md-12"><img src="/static/img/avatar_m.png" alt="http://placehold.it/96x96"/ class="message-profile"><br/><br/></div>
+					</div>
+	        	</div>
+        		<div class="col-xs-12 col-md-10">
+	            	<div class="row">
+		            	<div class="col-xs-12 col-md-12 message-content">{{ msg.content }}</div>
+		            	<div class="col-xs-7 col-md-8">{{ msg.date }}</div>
+		            	<div class="col-xs-5 col-md-4">
+							{% if session.get('user_info') and author.id == session['user_info'].id %}
+						    <span><a href="{{ url_for('update_message', thread_id=thread.id, message_id=msg.id) }}"> 수정 </a></span>
+							{% if msg != messages[0][0] %}
+						    <span><a href="{{ url_for('delete_message', thread_id=thread.id, message_id=msg.id) }}">| 삭제 </a></span>
+							{% endif %}
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<br/>
+		</td>	
+	</tr>
+	{% else %}
+  	<tr><td> 노 메시지.</td></tr>
+	{% endfor %}
+</table>	  		
+
+	{% if session.user_info %}
+		<form action="{{ url_for('add_message', thread_id=thread.id) }}" method=post>
+			{% if form.errors %}
+		<ul class="error">
+		    {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+		        {% for error in field_errors %}
+		          <li>{{ form[field_name].label }}: {{ error }}</li>
+		        {% endfor %}
+		    {% endfor %}
+		</ul>
+		{% endif %}			
+	 		<span>{{ form.content.label }}: {{ form.content() }}</span>   
+			<span>{{ form.submit() }}</span>
+		</form>
+	{% endif %}
+	<!-- <div><a href="{{ url_for('main') }}">뒤로 가기</a></div> -->
 {% endblock %}

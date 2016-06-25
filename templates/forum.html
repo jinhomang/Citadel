@@ -1,30 +1,36 @@
 {%extends "layout.html"%}
 {%block body%}
 <h1>{{ name }}</h1>
-<div class="row">
-  <div class="col-md-3">
-    <table class="table table-striped">
-      <thead>
+      <table class="table table-striped table-condensed">
         <tr>
-          <th>타이틀</th>
-          <th>작성자</th>
-          <th>답변</th>
-          <th>조회</th>
+            <th>
+              <div class="row">
+                <div class="col-xs-12 col-md-7">제목</div>
+                <div class="col-xs-8 col-md-3">글쓴이</div>
+                <div class="col-xs-4 col-md-2">답변</div>
+              </div>  
+            </th>
         </tr>
-      </thead>
-      <tbody>
-          {% for thread in threads %}
-          <tr>
-            <td><a href="{{ url_for('show_thread', id=thread.id) }}">{{ thread.title }}</a></td>
-            <td>{{ thread.author_name }}</td>
-            <td>{{ thread.replies }}</td> 
-            <td>{{ thread.views }}</td>
-          </tr>
-          {% else %}
-          <em>믿을 수 없네요. 쓰레드가 하나도 없어요.</em>
-          {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</div>  
+      {% for (thread, first_message, author) in threads %}
+        <tr>
+          <td>
+              <div class="row">
+                <div class="col-xs-11 col-md-7"><a href="{{ url_for('show_thread', id=thread.id) }}">{{ thread.title }}</a></div>
+                <div class="col-xs-8 col-md-3"> {{ author.nickname }}<br/> {{ first_message.date }} </div>
+                <div class="col-xs-4 col-md-2"> 답변: {{ thread.replies }}</br> 조회: {{ thread.views }} </div>
+              </div>
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td>믿을 수 없네요. 쓰레드가 하나도 없어요.</td>
+        </tr>
+      {% endfor %}
+      </table>
+
+<div class="row">
+{% if session.user_info %}
+  <a href="{{ url_for('create_thread') }}" class="btn btn-sm btn-default">새 쓰레드 생성</a>
+{% endif %}
+</div>
 {% endblock %}
