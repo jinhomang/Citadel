@@ -82,6 +82,10 @@ class UpdatesMessageForm(Form):
 	content = TextAreaField('내용', [validators.Length(min=1)])
 	submit = SubmitField('수정')	
 
+# FB ################################################################################
+@app.route('/fb_test')
+def fb_test():
+	return render_template('fb_test.html')
 
 # Regist ################################################################################
 @app.route('/regist_user', methods = ['GET', 'POST'])
@@ -204,14 +208,19 @@ def add_message(thread_id):
 			setattr(new_message, 'thread_id', thread_id)
 			setattr(new_message, 'date',  datetime.today().strftime('%Y-%m-%d %H:%M:%S'))
 			dbs.add(new_message)
+
+			this_thread = dbs.query(Thread).filter(Thread.id == thread_id).one()
+			this_thread.replies = len(this_thread.messages)
+			dbs.add(this_thread)
+
 			dbs.commit()
+
 		except Exception as e:
 			error = errorMsg['database_exception'] + str(e)
 			dbs.rollback()
 			raise e
 		finally: 
 			dbs.close()
-
 		
 	return redirect(url_for('show_thread', id=thread_id))
 
@@ -229,6 +238,11 @@ def update_message(thread_id, message_id):
 			setattr(updated_message, 'content', message_form['content'].data)
 			setattr(updated_message, 'date',  datetime.today().strftime('%Y-%m-%d %H:%M:%S'))
 			dbs.add(updated_message)
+
+			this_thread = dbs.query(Thread).filter(Thread.id == thread_id).one()
+			this_thread.replies = len(this_thread.messages)
+			dbs.add(this_thread)
+
 			dbs.commit()
 		except Exception as e:
 			error = errorMsg['database_exception'] + str(e)
@@ -239,12 +253,14 @@ def update_message(thread_id, message_id):
 		finally: 
 			dbs.close()
 	else:
-		message = dbs.query(Message).filter(Message.id == message_id).one()
-		dbs.close()
+			message = dbs.query(Message).filter(Message.id == message_id).one()
+			message_form['content'].data = message.content;
+			dbs.close()
+			# return redirect(url_for('show_thread', id=thread_id))
 
-		message_form['content'].data = message.content;
+	return render_template('update_message.html', form=message_form, thread_id=thread_id, message_id=message_id)
 
-		return render_template('update_message.html', form=message_form, thread_id=thread_id, message_id=message_id)
+
 
 
 # Delete message ########################################################################
@@ -259,6 +275,11 @@ def delete_message(thread_id, message_id):
 			error = errorMsg['delete_message_error'] 
 		else:
 			dbs.delete(q.one())
+
+			this_thread = dbs.query(Thread).filter(Thread.id == thread_id).one()
+			this_thread.replies = len(this_thread.messages)
+			dbs.add(this_thread)
+
 			dbs.commit()
 	except Exception as e:
 		error = errorMsg['database_exception'] + str(e)	
@@ -276,33 +297,63 @@ def delete_message(thread_id, message_id):
 def show_thread(id):
 	error = None
 	q = dbs.query(Thread).filter(Thread.id == id)
-	dbs.close()
 
 	if q.count() == 0:
 		error = errorMsg['thread_not_exists']
+		dbs.close()
 	else:
-		thread = alc2json(q.one())
-		messages = [(alc2json(msg), alc2json(msg.author)) for msg in q.one().messages]
-		message_form = AddMessageForm(request.form)	
+		this_thread = q.one();
+
+		thread = alc2json(this_thread)
+		messages = [(alc2json(msg), alc2json(msg.author)) for msg in this_thread.messages]
+		message_form = AddMessageForm(request.form)
+		dbs.close()
+
 		return render_template('show_thread.html', thread=thread, messages=messages, form=message_form)	
 
 	return redirect('main')
 
 
 # Show thread list ######################################################################
-@app.route('/forums/<name>')
-def forum(name):
-	q = dbs.query(Thread).all()
+@app.route('/forums/<name>/<page>')
+def forum(name, page):
+
+	# total_rows: 현재 게시판의 전체 쓰레드 행 개수
+	# page_rows: 한 페이지에 출력되는 쓰레드 행 개수
+	# cur_page_idx: 현재 보여지는 페이지의 인덱스
+	# first_row_idx: 현재 보여지는 페이지의 첫번째 쓰레드 행 인덱스 
+	# last_row_idx:  현재 보여지는 페이지의 마지막 쓰레드 행 인덱스 
+
+	total_rows = len(dbs.query(Thread).all())
+	page_rows = 20 
+	total_pages = total_rows / page_rows
+	if (total_rows%page_rows) > 0:
+		total_pages += 1
+
+	cur_page_idx = min(int(page)-1, max(0, total_pages-1))
+	first_row_idx = cur_page_idx * page_rows
+	last_row_idx = min(first_row_idx + page_rows, total_rows)
+	q = dbs.query(Thread).slice(first_row_idx, last_row_idx)
 	threads = [(alc2json(thread), alc2json(thread.messages[0]), alc2json(thread.messages[0].author)) for thread in q]
+
 	dbs.close()
 
-	return render_template('forum.html', name=name, threads=threads)
+	max_page_display = 4
+	start_page_idx = (cur_page_idx / max_page_display) * max_page_display
+	end_page_idx = min(start_page_idx + max_page_display, total_pages)
+
+	return render_template('forum.html', 
+							name=name, 
+							threads=threads, 
+							total_pages=total_pages, 
+							start_page_idx=start_page_idx,
+							end_page_idx=end_page_idx)
 
 
 # Main ##################################################################################
 @app.route('/')
 def main():
-	return redirect(url_for('forum', name='unity'))
+	return redirect(url_for('forum', name='unity', page=1))
 
 # run the application
 if __name__ == '__main__':

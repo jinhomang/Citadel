@@ -1,0 +1,16 @@
+{%extends "layout.html"%}
+{%block body%}
+<!--
+  Below we include the Login Button social plugin. This button uses
+  the JavaScript SDK to present a graphical Login button that triggers
+  the FB.login() function when clicked.
+-->
+
+<fb:login-button scope="public_profile, email" data-size="large" data-auto-logout-link="true" onlogin="checkLoginState();">
+</fb:login-button>
+<div id="status">
+</div>
+
+<div class="fb-like" data-href="http://192.168.0.6/forums/unity" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+
+{%endblock%}

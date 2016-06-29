@@ -8,17 +8,20 @@
   	<tr>
   		<td>
   			<br/>
-	        <div class="row row-message">
+	        <div class="row">
 	        	<div class="col-xs-12 col-md-2">		        		
 	        		<div class="row">
 	        			<div class="col-xs-12 col-md-12">{{ author.nickname }}</div>
-						<div class="col-xs-3 col-md-12"><img src="/static/img/avatar_m.png" alt="http://placehold.it/96x96"/ class="message-profile"><br/><br/></div>
+						<div class="col-xs-3 col-md-12"><img src="/static/img/avatar_m.png" alt="http://placehold.it/96x96"/ class="message-profile"></div>
+						<div class="col-xs-9 col-md-12">
+							<small>초보 lv.12 <br/>포인트: {{ author.trophy_point }}<br/>메시지: {{ author.message_count }}<br/></small>
+						</div>
 					</div>
 	        	</div>
         		<div class="col-xs-12 col-md-10">
 	            	<div class="row">
 		            	<div class="col-xs-12 col-md-12 message-content">{{ msg.content }}</div>
-		            	<div class="col-xs-7 col-md-8">{{ msg.date }}</div>
+		            	<div class="col-xs-7 col-md-8"><small>{{ msg.date }}</small></div>
 		            	<div class="col-xs-5 col-md-4">
 							{% if session.get('user_info') and author.id == session['user_info'].id %}
 						    <span><a href="{{ url_for('update_message', thread_id=thread.id, message_id=msg.id) }}"> 수정 </a></span>
@@ -30,28 +33,40 @@
 					</div>
 				</div>
 			</div>
-			<br/>
 		</td>	
 	</tr>
 	{% else %}
   	<tr><td> 노 메시지.</td></tr>
 	{% endfor %}
-</table>	  		
 
 	{% if session.user_info %}
-		<form action="{{ url_for('add_message', thread_id=thread.id) }}" method=post>
-			{% if form.errors %}
-		<ul class="error">
-		    {% for field_name, field_errors in form.errors|dictsort if field_errors %}
-		        {% for error in field_errors %}
-		          <li>{{ form[field_name].label }}: {{ error }}</li>
-		        {% endfor %}
-		    {% endfor %}
-		</ul>
-		{% endif %}			
-	 		<span>{{ form.content.label }}: {{ form.content() }}</span>   
-			<span>{{ form.submit() }}</span>
-		</form>
+	<tr>
+		<td>
+	        <div class="row">
+	        	<div class="col-xs-12 col-md-2">		        		
+	        		<div class="row">
+	        			<div class="col-xs-12 col-md-12"> <b> {{ session.user_info['nickname'] }} </b> </div>
+						<div class="col-xs-12 col-md-12"><img src="/static/img/avatar_m.png" alt="http://placehold.it/96x96"/ class="message-profile"></div>
+					</div>
+	        	</div>
+        		<div class="col-xs-12 col-md-10">
+					<form action="{{ url_for('add_message', thread_id=thread.id) }}" method=post>
+						{% if form.errors %}
+						<ul class="error">
+					    	{% for field_name, field_errors in form.errors|dictsort if field_errors %}
+					        	{% for error in field_errors %}
+					          	<li>{{ form[field_name].label }}: {{ error }}</li>
+					        	{% endfor %}
+					    	{% endfor %}
+						</ul>
+						{% endif %}
+				 		<span>{{ form.content.label }}: {{ form.content() }}</span>   
+						<div>{{ form.submit() }}</div>
+					</form>
+				</div>
+			</div>
+		</td>
+	</tr>
 	{% endif %}
-	<!-- <div><a href="{{ url_for('main') }}">뒤로 가기</a></div> -->
+</table>	  		
 {% endblock %}
