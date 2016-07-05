@@ -1,13 +1,16 @@
 {% extends "layout.html" %}
+
+{% import 'editor.html' as editor %}
+
+{% block head %}
+	{{ editor.resource() }}
+{% endblock %}
+
 {% block body %}
 	{% if session.user_info %}
-	<form action="{{ url_for('update_message', thread_id=thread_id, message_id=message_id) }}" method=post>
-		<div>{{ form.content.label }}: {{ form.content() }}</a></div>
-		<span>{{ form.submit() }}</span>
-		<span><a href="{{ url_for('show_thread', id=thread_id) }}">취소</a></span>
-	</form>
+		{{ editor.form(name='update_message_editor', submit_url=url_for('update_message', thread_id=thread_id, message_id=message_id), cancel_url=url_for('show_thread', id=thread_id), submit_label='수정') }}
+		{{ editor.load_content( content | safe ) }}
 	{% else %}
-		해당 글을 수정할 수 없습니다.
+		잘못된 접근입니다.
 	{% endif %}
-
 {% endblock %}

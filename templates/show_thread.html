@@ -1,4 +1,11 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %}기
+
+{% import 'editor.html' as editor %}
+
+{% block head %}
+	{{ editor.resource() }}
+{% endblock %}
+
 {% block body %}
 <table class="table table-striped">
 	<tr>
@@ -20,7 +27,7 @@
 	        	</div>
         		<div class="col-xs-12 col-md-10">
 	            	<div class="row">
-		            	<div class="col-xs-12 col-md-12 message-content">{{ msg.content }}</div>
+		            	<div class="col-xs-12 col-md-12 message-content">{{ msg.content|safe }}</div>
 		            	<div class="col-xs-7 col-md-8"><small>{{ msg.date }}</small></div>
 		            	<div class="col-xs-5 col-md-4">
 							{% if session.get('user_info') and author.id == session['user_info'].id %}
@@ -50,7 +57,10 @@
 					</div>
 	        	</div>
         		<div class="col-xs-12 col-md-10">
-					<form action="{{ url_for('add_message', thread_id=thread.id) }}" method=post>
+						{% if session.user_info %}
+							{{ editor.form(name='add_message_editor', submit_url=url_for('add_message', thread_id=thread.id), submit_label='댓글 달기', hide_cancel=True, initHeight=200) }}
+						{% endif %}
+<!-- 						<form action="{{ url_for('add_message', thread_id=thread.id) }}" method=post>
 						{% if form.errors %}
 						<ul class="error">
 					    	{% for field_name, field_errors in form.errors|dictsort if field_errors %}
@@ -63,7 +73,7 @@
 				 		<span>{{ form.content.label }}: {{ form.content() }}</span>   
 						<div>{{ form.submit() }}</div>
 					</form>
-				</div>
+ -->				</div>
 			</div>
 		</td>
 	</tr>

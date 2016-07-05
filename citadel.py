@@ -159,15 +159,38 @@ def create_thread():
 	if not session.get('user_info'):
 		abort(403)
 
-	create_form = CreateThreadForm(request.form)
-	if request.method == 'POST' and create_form.validate():
+
+	#create_form = CreateThreadForm(request.form)
+	# if request.method == 'POST' and create_form.validate():
+	# 	try:
+	# 		new_thread = Thread()
+	# 		setattr(new_thread, 'title', create_form['title'].data)
+	# 		setattr(new_thread, 'views', 0)
+	# 		setattr(new_thread, 'replies', 0)			
+	# 		first_message = Message()
+	# 		setattr(first_message, 'content', create_form['content'].data)
+	# 		setattr(first_message, 'author_id', session['user_info']['id'])
+	# 		setattr(first_message, 'thread', new_thread)
+	# 		setattr(first_message, 'date', datetime.today().strftime('%Y-%m-%d %H:%M:%S'))
+	# 		dbs.add(new_thread)
+	# 		dbs.add(first_message)
+	# 		dbs.commit()
+	# 	except Exception as e:
+	# 		error = errorMsg['database_exception'] + str(e)
+	# 		dbs.rollback()
+	# 		raise e
+	# 	else:
+	# 		return redirect(url_for('main'))
+	# 	finally: 
+	# 		dbs.close()
+	if request.method == 'POST':
 		try:
 			new_thread = Thread()
-			setattr(new_thread, 'title', create_form['title'].data)
+			setattr(new_thread, 'title', request.form['title'])
 			setattr(new_thread, 'views', 0)
 			setattr(new_thread, 'replies', 0)			
 			first_message = Message()
-			setattr(first_message, 'content', create_form['content'].data)
+			setattr(first_message, 'content', request.form['content'])
 			setattr(first_message, 'author_id', session['user_info']['id'])
 			setattr(first_message, 'thread', new_thread)
 			setattr(first_message, 'date', datetime.today().strftime('%Y-%m-%d %H:%M:%S'))
@@ -181,16 +204,15 @@ def create_thread():
 		else:
 			return redirect(url_for('main'))
 		finally: 
-			dbs.close()
-
+			dbs.close()	
 	else:
-		return render_template('create_thread.html', form=create_form)
+		return render_template('create_thread.html')
 
 
 # Update thread #########################################################################
-@app.route('/update_thread/<id>', methods = ['GET', 'POST'])
-def delete_thread(id):
-	pass
+# @app.route('/delete_thread/<id>', methods = ['GET', 'POST'])
+# def delete_thread(id):
+# 	pass
 
 
 # Add message ###########################################################################
@@ -199,28 +221,29 @@ def add_message(thread_id):
 	if not session.get('user_info'):
 		abort(403)
 
-	reply_form = AddMessageForm(request.form)
-	if reply_form.validate():
-		try:
-			new_message = Message()
-			setattr(new_message, 'content', reply_form['content'].data)
-			setattr(new_message, 'author_id', session['user_info']['id'])
-			setattr(new_message, 'thread_id', thread_id)
-			setattr(new_message, 'date',  datetime.today().strftime('%Y-%m-%d %H:%M:%S'))
-			dbs.add(new_message)
+	# reply_form = AddMessageForm(request.form)
+	# if reply_form.validate():
 
-			this_thread = dbs.query(Thread).filter(Thread.id == thread_id).one()
-			this_thread.replies = len(this_thread.messages)
-			dbs.add(this_thread)
+	try:
+		new_message = Message()
+		setattr(new_message, 'content', request.form['content']) #reply_form['content'].data)
+		setattr(new_message, 'author_id', session['user_info']['id'])
+		setattr(new_message, 'thread_id', thread_id)
+		setattr(new_message, 'date',  datetime.today().strftime('%Y-%m-%d %H:%M:%S'))
+		dbs.add(new_message)
 
-			dbs.commit()
+		this_thread = dbs.query(Thread).filter(Thread.id == thread_id).one()
+		this_thread.replies = len(this_thread.messages)
+		dbs.add(this_thread)
 
-		except Exception as e:
-			error = errorMsg['database_exception'] + str(e)
-			dbs.rollback()
-			raise e
-		finally: 
-			dbs.close()
+		dbs.commit()
+
+	except Exception as e:
+		error = errorMsg['database_exception'] + str(e)
+		dbs.rollback()
+		raise e
+	finally: 
+		dbs.close()
 		
 	return redirect(url_for('show_thread', id=thread_id))
 
@@ -231,12 +254,12 @@ def update_message(thread_id, message_id):
 	if not session.get('user_info'):
 		abort(403)
 
-	message_form = UpdatesMessageForm(request.form)
-	if request.method == 'POST' and message_form.validate():
+	# message_form = UpdatesMessageForm(request.form)
+	if request.method == 'POST': # and message_form.validate():
 		try:
 			updated_message = dbs.query(Message).filter(Message.id == message_id).filter(Message.author_id == session['user_info']['id']).one()
-			setattr(updated_message, 'content', message_form['content'].data)
-			setattr(updated_message, 'date',  datetime.today().strftime('%Y-%m-%d %H:%M:%S'))
+			setattr(updated_message, 'content', request.form['content'])
+			setattr(updated_message, 'date', datetime.today().strftime('%Y-%m-%d %H:%M:%S'))
 			dbs.add(updated_message)
 
 			this_thread = dbs.query(Thread).filter(Thread.id == thread_id).one()
@@ -253,13 +276,10 @@ def update_message(thread_id, message_id):
 		finally: 
 			dbs.close()
 	else:
-			message = dbs.query(Message).filter(Message.id == message_id).one()
-			message_form['content'].data = message.content;
-			dbs.close()
-			# return redirect(url_for('show_thread', id=thread_id))
-
-	return render_template('update_message.html', form=message_form, thread_id=thread_id, message_id=message_id)
-
+		message = dbs.query(Message).filter(Message.id == message_id).one()
+		dbs.close()
+		# return redirect(url_for('show_thread', id=thread_id))
+		return render_template('update_message.html', thread_id=thread_id, message_id=message_id, content=message.content)
 
 
 
@@ -349,6 +369,9 @@ def forum(name, page):
 							start_page_idx=start_page_idx,
 							end_page_idx=end_page_idx)
 
+@app.route('/editor')
+def editor():
+	return render_template('editor.html')
 
 # Main ##################################################################################
 @app.route('/')

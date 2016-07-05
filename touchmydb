@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# touch my database for Citadel project
+
+clear
+echo "
+Please Select:
+
+1. Show database status
+2. Add new dummy data in tables
+3. Remove all data in tables
+0. Quit
+"
+
+read -p "Enter selection [0-3] > "
+
+if [[ $REPLY =~ ^[0-3]$ ]]; then
+	if [[ $REPLY == 0 ]]; then
+		echo "Program terminated."
+		exit
+	fi
+	if [[ $REPLY == 1 ]]; then
+		exit
+	fi
+	if [[ $REPLY == 2 ]]; then
+		exit
+	fi
+	if [[ $REPLY == 3 ]]; then
+		exit
+	fi
+else
+	echo "Invalid entry." >&2
+	exit 1
+fi 

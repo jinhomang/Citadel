@@ -1,11 +1,15 @@
-{% extends "layout.html" %}
+{% extends 'layout.html' %}
+
+{% import 'editor.html' as editor %}
+
+{% block head %}
+	{{ editor.resource() }}
+{% endblock %}
+
 {% block body %}
 	{% if session.user_info %}
-  		<form action="{{ url_for('create_thread') }}" method=post>
-  	 		<div>{{ form.title.label }}: {{ form.title() }}</a></div>
-  	 		<div>{{ form.content.label }}: {{ form.content() }}</div>   
-   			<span>{{ form.submit() }}</span>
-   			<span><a href="{{ url_for('main') }}">뒤로</a></span>
-   		</form>
+		{{ editor.form(name='create_thread_editor', submit_url=url_for('create_thread'), cancel_url=url_for('forum', name='unity', page=1), submit_label='생성', hide_title=False) }}
+	{% else %}
+		잘못된 접근입니다.
 	{% endif %}
 {% endblock %}
