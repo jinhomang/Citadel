@@ -26,9 +26,32 @@
   {% endblock %}
 
 
+<script type="text/javascript" src="/static/sh/scripts/shCore.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shLegacy.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushBash.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushCpp.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushCSharp.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushCss.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushDelphi.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushDiff.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushGroovy.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushJava.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushJScript.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushPhp.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushPlain.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushPython.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushRuby.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushScala.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushSql.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushVb.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushXml.js"></script>
+<link type="text/css" rel="stylesheet" href="/static/sh/styles/shCore.css">
+<link type="text/css" rel="stylesheet" href="/static/sh/styles/shThemeDefault.css">
+<script type="text/javascript"> SyntaxHighlighter.all(); </script>
+
 </head>
 
-<body>
+<body Onload="dp.SyntaxHighlighter.HighlightAll('code');">
   <!-- Load Facebook SDK for JavaScript -->
   <div id="fb-root"></div>
   <script>(function(d, s, id) {
@@ -106,6 +129,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
 <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+
+
 </html>
 
 

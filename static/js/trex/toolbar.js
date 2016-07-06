@@ -130,6 +130,8 @@ Trex.module("bind events with tools",
 			if (!isMobile) {
 				return;
 			}
+
+			$tx.addClassName(toolbar.el, "tx-hide");
 			for (name in _tools) {
 				tool = _tools[name];
 				if (tool.disabledonmobile) {

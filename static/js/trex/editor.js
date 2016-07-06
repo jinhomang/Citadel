@@ -440,4 +440,13 @@ Trex.Editor = Trex.Class.create( /** @lends Trex.Editor.prototype */{
 	 * @deprecated since ver 1.2, Use Editor.focusOnForm
 	 */
 	Editor.prototype.focusOnForm = Editor.focusOnForm;
+
+	Editor.checkMobile = function() {
+			var isMobile, name, tool, btn;
+			isMobile = $tx.ios || $tx.android;
+			if (!isMobile) {
+				return;
+			}
+			document.getElementById("tx_editor_form").className += "its-mobile-edit";
+	}
 })();

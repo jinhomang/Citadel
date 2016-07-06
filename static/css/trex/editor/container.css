@@ -23,7 +23,6 @@
 	.tx-toolbar .tx-list-first, .tx-toolbar .tx-list-last {background-image:none !important;}
 	
 	.tx-toolbar .tx-disable a { cursor:default; filter:alpha(opacity=30); opacity:0.3; }
-	.tx-toolbar .tx-hide { display: none; }
 	
 	.tx-toolbar .tx-bar li a {color:#333;cursor:pointer;display:block;font-family:dotum,sans-serif;font-size:12px; text-decoration:none;}
 	.tx-toolbar-basic li.tx-list {z-index:5;}
@@ -59,7 +58,6 @@
 	
 	.tx-sidebar .tx-disable a,
 	.tx-sidebar ul.tx-disable { cursor:default; filter:alpha(opacity=30); opacity:0.3; }
-	.tx-sidebar .tx-hide { display: none; }
 		
 	.tx-nav-attach .tx-list { padding:0 14px 0 0; }
 	.tx-nav-search .tx-list { padding:0 9px 0 4px; }

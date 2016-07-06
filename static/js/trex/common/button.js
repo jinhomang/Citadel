@@ -435,7 +435,6 @@ Trex.Button = Trex.Class.create(/** @lends Trex.Button.prototype */{
 		if(this.elButton) {
 			this.isDisabled = _TRUE;
 			$tx.addClassName(this.elButton, "tx-disable");
-			$tx.addClassName(this.elButton, "tx-hide");
 		}
 	},
 	/**
@@ -446,7 +445,6 @@ Trex.Button = Trex.Class.create(/** @lends Trex.Button.prototype */{
 		if(this.elButton) {
 			this.isDisabled = _FALSE;
 			$tx.removeClassName(this.elButton, "tx-disable");
-			$tx.removeClassName(this.elButton, "tx-hide");
 		}
 	},
 	/**
