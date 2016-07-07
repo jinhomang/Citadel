@@ -9415,7 +9415,7 @@ goog.dom.browserrange.IeRange.pasteElement_ = function(range, element,
   if (!id) {
     id = element.id = goog.string.createUniqueString();
   }
-
+  
   // Insert (a clone of) the node.
   range.pasteHTML(element.outerHTML);
 

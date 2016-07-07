@@ -134,6 +134,7 @@
 		 * @returns {String} 컨텐츠 문자열
 		 */
 		getContent: function() {
+
 			return this.wysiwygDoc.body.innerHTML;
 		},
 
@@ -144,12 +145,14 @@
 		 * @param {String} contentHTML - 컨텐츠
 		 */
 		setContent: function(contentHTML) {
+
 			contentHTML = this.doPreFilter(contentHTML);
 			this.setBodyHTML(contentHTML);
 			this.doPostFilter(this.wysiwygDoc.body);
 		},
 
 		doPreFilter: function(contentHTML) {
+
 			if (contentHTML) {
 				contentHTML = removeWordJoiner(contentHTML);
 				contentHTML = preventRemovingNoScopeElementInIE(contentHTML);
@@ -158,6 +161,7 @@
 		},
 
 		setBodyHTML: function(content) {
+			
 			this.wysiwygDoc.body.innerHTML = content || $tom.EMPTY_PARAGRAPH_HTML;
 		},
 

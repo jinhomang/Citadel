@@ -36,6 +36,7 @@ Trex.EmbedEntry = Trex.Class.create({
 		}	
 	},
 	setProperties: function(data) {
+		
 		this.type = this.constructor.__Identity;
 		
 		var _data = this.data = data;

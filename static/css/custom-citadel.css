@@ -44,15 +44,19 @@ img {
 
 .message-content * {
   word-break: break-all;
+  /*word-wrap: break-word;*/
 }
 
 .message-content pre {
   width: 270px;
   word-wrap: break-word;
+  word-break: break-all;
 }
 
 .message-content [style*=inline-block],
-.message-content [style*=block] {  
+.message-content [style*=block],
+.message-content [style*=box-sizing] {  
+
   max-width:100% !important;
   width:auto !important;
   height:auto !important;
@@ -61,7 +65,7 @@ img {
 .message-content object,
 .message-content iframe,
 .message-content embed {  
-  display: inline !important;
+  display:inline !important;
 }
 
 

@@ -11,7 +11,7 @@
   <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <link href="{{ url_for('static', filename='css/sticky-footer-navbar.css') }}" rel="stylesheet">
+  <!-- <link href="{{ url_for('static', filename='css/sticky-footer-navbar.css') }}" rel="stylesheet"> -->
   <link href="{{ url_for('static', filename='css/custom-citadel.css') }}" rel="stylesheet">
 
   <!-- IE8 에서 HTML5 요소와 미디어 쿼리를 위한 HTML5 shim 와 Respond.js -->
@@ -100,7 +100,7 @@
 
   <div class="container">
     <div class="row">
-      <div class="col-md-10">
+      <div class="col-md-10 col-md-offset-1">
         <p class="text-right">
           {% if not session.user_info %}
             <a href="{{ url_for('login') }}" class="btn btn-sm btn-success">로그인</a>
@@ -118,11 +118,11 @@
   </div>
 
   <!-- Footer -->
-  <footer class="footer">
+<!--   <footer class="footer">
     <div class="container">
       <p class="text-muted">Place sticky footer content here.</p>
     </div>
-  </footer>
+  </footer> -->
 </body>
 
 <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->

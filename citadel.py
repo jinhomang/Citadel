@@ -358,7 +358,7 @@ def forum(name, page):
 
 	dbs.close()
 
-	max_page_display = 4
+	max_page_display = 5
 	start_page_idx = (cur_page_idx / max_page_display) * max_page_display
 	end_page_idx = min(start_page_idx + max_page_display, total_pages)
 

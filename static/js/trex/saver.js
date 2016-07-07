@@ -6,6 +6,7 @@ Trex.install("editor.getSaver & editor.getDataAsJSON & editor.setDataByJSON",
 		};
 		
 		editor.getDataAsJSON = function() {
+			
 			var _content = canvas.getContent(); // getContent() of current mode
 			var _validator = new Trex.Validator();
 			if(!_validator.exists(_content)) {
@@ -31,6 +32,7 @@ Trex.install("editor.getSaver & editor.getDataAsJSON & editor.setDataByJSON",
 		};
 		
 		editor.setDataByJSON = function(jsonData) {
+
 			if(!jsonData) {
 				return;
 			}

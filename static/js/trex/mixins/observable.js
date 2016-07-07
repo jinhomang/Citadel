@@ -59,6 +59,7 @@ Trex.I.JobObservable = Trex.Faculty.create(/** @lends Trex.I.JobObservable */{
 	 * cinema.observeJob("cinema_on_paste", function(){alert('영화가 첨부되었네요')}) 
 	 */
 	fireJobs: function(name) {
+		
 		var _self = this;
 		var args = $A(arguments).slice(1);
 		if(!this.jobObservers[name]) {

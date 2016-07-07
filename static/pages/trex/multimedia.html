@@ -53,12 +53,15 @@
 	// 코드 삽입 완료 후
 	function done() {
 		var _data = {};
-		var types = document.getElementsByName("codeType");
-		if (types[1].checked) {
-			_data.url = document.getElementsByName("url")[0].value.trim();
-		} else if (types[0].checked) {
-			_data.code = document.getElementsByName("source")[0].value.trim();
-		}
+		// var types = document.getElementsByName("codeType");
+		// if (types[1].checked) {
+		// 	_data.url = document.getElementsByName("url")[0].value.trim();
+		// } else if (types[0].checked) {
+		// 	_data.code = document.getElementsByName("source")[0].value.trim();
+		// }
+
+		_data.url = document.getElementsByName("url")[0].value.trim();
+
 		if (typeof(execEmbed) == 'undefined') { //Virtual Function
 	        return;
 	    }
@@ -107,18 +110,18 @@
 </div>	
 <div class="body">
 	<div id="code" class="code">
-		<p class="desc">아래 <span>멀티미디어 </span> 등의 삽입 방식을 선택한 후, 주소를 입력하세요.</p>
+		<p class="desc">이미지나 동영상 등의 외부 컨텐츠 주소를 입력하세요.</p>
 		<ul class="field">
-			<li class="codesubmenu">
+<!-- 			<li class="codesubmenu">
 				<ol class="codeMenu">
-					<li><input type="radio" id="type_source" value="source" name="codeType" onclick="selectType('codeSource');" checked="checked" style="border:none" /> <label for="type_source">html(embed,object 소스입력)</label></li>
-					<li><input type="radio" id="type_url" value="url" name="codeType" onclick="selectType('codeUrl');" style="border:none" /> <label for="type_url">멀티미디어 링크</label></li>
+ 					<li><input type="radio" id="type_source" value="source" name="codeType" onclick="selectType('codeSource');" checked="checked" style="border:none" /> <label for="type_source">html(embed,object 소스입력)</label></li>
+ 					<li><input type="radio" id="type_url" value="url" name="codeType" onclick="selectType('codeUrl');" style="border:none" /> <label for="type_url">멀티미디어 링크</label></li>
 				</ol> 
 			</li>
-			<li class="inputmenu">
+ -->			<li class="inputmenu">
 				<ol>
-					<li id="codeSource"><label>소스입력 </label><textarea rows="7" name="source"></textarea></li>							
-					<li id="codeUrl" class="unselected"><label>링크입력 </label><input type="text" name="url" disabled="true" /></li>
+					<!-- <li id="codeSource"><label>소스입력 </label><textarea rows="7" name="source"></textarea></li>							 -->
+					<li id="codeUrl"><label>주소입력: </label><input type="text" name="url" /></li>
 				</ol>
 			</li>
 		</ul>
