@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+
+{% block nav %}
+<!-- 여기 블럭에 아무 내용도 넣지 않음으로써, layout.html의 네비게이션바가 이 페이지에 추가되지 않도록 함 -->
+{% endblock %}
+
+{% block body %}
+<form action="{{ url_for('join') }}" name="join_form" id = "join_form" class="custom-join-form" method=post>
+
+  <h2 class="page-header">가입하기</h2>
+
+  <p class="custom-center"><h5>시타델 커뮤니티를 경험해 보세요. </h5></p>
+
+  <dl class="form-group">
+    <dt>
+      <div>
+        <label for="{{ form.user_id.id }}">{{ form.user_id.label }}</label>
+      </div>
+    </dt>
+    <dd>
+      <div>
+        {{ form.user_id(class="form-control", type="email") }}
+      </div>
+      {% if form.user_id.errors %}
+        {% for error in form.user_id.errors  %}
+        <div class="error help-block"><li> {{ error }}</li></div>
+        {% endfor %}
+      {% endif %}
+    </dd>
+  </dl>
+
+  <dl class="form-group">
+    <dt>
+      <div>
+        <label for="{{ form.password.id }}">{{ form.password.label }}</label>
+      </div>
+    </dt>
+    <dd>
+      <div>
+        {{ form.password(class="form-control") }}
+      </div>
+      {% if form.password.errors %}
+        {% for error in form.password.errors  %}
+          <div class="error help-block"><li> {{ error }}</li></div>
+        {% endfor %}
+      {% endif %}
+    </dd>
+  </dl>
+
+  <dl class="form-group">
+    <dt>
+      <div>
+        <label for="{{ form.name.id }}">{{form.name.label }}</label>
+      </div>
+    </dt>
+    <dd>
+      <div>
+        {{ form.name(class="form-control") }}
+      </div>
+      {% if form.name.errors %}
+        {% for error in form.name.errors  %}
+          <div class="error help-block"><li> {{ error }}</li></div>
+        {% endfor %}
+      {% endif %}      
+    </dd>
+  </dl>
+
+  <p class="page-header">아래의 "가입하기" 버튼을 클릭함으로써, 
+  <a href="https://help.github.com/terms" target="_blank">Terms of Service</a>와 
+  <a href="https://help.github.com/privacy" target="_blank">Privacy Policy</a>에 자동으로 동의하게 됩니다.</p>
+
+  {{ form.submit(class="btn btn-sm btn-success btn-block") }}    
+ 
+</form>
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+    $('dl.form-group:has(.error)').addClass('has-error');
+    $('.has-error:first input:first').focus();  
+});
+</script>
+{% endblock %}

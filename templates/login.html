@@ -1,21 +1,118 @@
 {% extends "layout.html" %}
-{% block body %}
-  <h3>로그인</h3>
-  <form action="{{ url_for('login') }}" method=post>
-    <div>{{ form.user_id.label }}: {{ form.user_id() }}</div>
-    <div>{{ form.password.label }}: {{ form.password() }}</div>   
-    <div>{{ form.submit() }}</div>
 
-    {% if form.errors %}
-        <ul class="error">
-            {% for field_name, field_errors in form.errors|dictsort if field_errors %}
-                {% for error in field_errors %}
-                  <li>{{ form[field_name].label }}: {{ error }}</li>
-                {% endfor %}
-            {% endfor %}
-        </ul>
-    {% endif %}
-
-    {% if err %}<p class="error"><strong>에:</strong> {{ err }}{% endif %}
-  </form>
+{% block nav %}
+<!-- 여기 블럭에 아무 내용도 넣지 않음으로써, layout.html의 네비게이션바가 이 페이지에 추가되지 않도록 함 -->
 {% endblock %}
+
+{% block body %}
+<p class="custom-center">
+<img src="{{ url_for('static', filename='img/logo.png') }}" class="custom-logo img-rounded">
+</p>  
+<h3 class="custom-center">로그인</h3>
+
+
+{% if form.errors or err %}
+<p class="custom-login-error">정확하지 않은 이메일 또는 패스워드입니다.
+  <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+</p>
+{% endif %}
+
+
+<form action="{{ url_for('login') }}" name="login_form" class="custom-login-form" method=post>
+  <div class="form-group" >
+    <label for="{{ form.user_id.id }}">{{form.user_id.label }}</label>
+    {{ form.user_id(class="form-control", placeholder="이메일을 입력하세요", type="email") }} 
+  </div>
+  <div class="form-group">
+    <label for="{{ form.password.id }}">{{ form.password.label }}</label>
+    {{ form.password(class="form-control", placeholder="패스워드를 입력하세요") }}
+  </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" id="save_id"> 이메일 주소를 저장합니다
+    </label>
+  </div>
+  {{ form.submit(class="btn btn-sm btn-success btn-block") }}
+</form>
+ 
+<div class="custom-login-form" style="margin: 12px auto; text-align:center">
+  처음이신가요?  그냥 <a href="{{ url_for('join') }}">가입</a>해보세요.
+</div>
+
+<script type="text/javascript" language="JavaScript">
+  if(document.forms['login_form'].elements[ '{{ form.user_id.name }}' ].value === "")
+    document.forms['login_form'].elements[ '{{ form.user_id.name }}' ].focus();
+  else
+    document.forms['login_form'].elements[ '{{ form.password.name }}' ].focus();
+</script>
+{% endblock %}
+
+
+{% block script %}
+<!-- 이메일 저장하기 -->
+<script>
+$(document).ready(function(){
+    var $inputId = $('input[id="{{ form.user_id.id }}"]');
+    var $checkbox = $('#save_id');
+
+    cookieValue = getCookie("citadel_user_id");   
+    if(cookieValue != ""){ 
+        $inputId.val(cookieValue);  
+        $checkbox.attr("checked", true); 
+    }
+     
+    $checkbox.on('change', function(){ 
+        if($checkbox.is(':checked')){ 
+            setCookie("citadel_user_id", $inputId.val(), 7); 
+        }
+        else{ 
+            deleteCookie("citadel_user_id");
+        }
+    });
+     
+    $inputId.on('keyup', function(){ 
+        if($checkbox.is(":checked")){ 
+            setCookie("userInputId", $inputId.val(), 7);
+        }
+    });
+});
+ 
+function setCookie(cookieName, value, exdays){
+    var exdate = new Date();
+    exdate.setDate(exdate.getDate() + exdays);
+    var cookieValue = escape(value) + ((exdays==null) ? "" : "; expires=" + exdate.toGMTString());
+    document.cookie = cookieName + "=" + cookieValue;
+}
+
+function getCookie(cookieName) {
+    cookieName = cookieName + '=';
+    var cookieData = document.cookie;
+    var start = cookieData.indexOf(cookieName);
+    var cookieValue = '';
+    if(start != -1){
+        start += cookieName.length;
+        var end = cookieData.indexOf(';', start);
+        if(end == -1)end = cookieData.length;
+        cookieValue = cookieData.substring(start, end);
+    }
+    return unescape(cookieValue);
+}
+ 
+function deleteCookie(cookieName){
+    var expireDate = new Date();
+    expireDate.setDate(expireDate.getDate() - 1);
+    document.cookie = cookieName + "= " + "; expires=" + expireDate.toGMTString();
+}
+</script>
+
+<!-- 어디에 포커스를 줄 것인가 -->
+<script type="text/javascript" language="JavaScript">
+$(document).ready(function(){
+  if(document.forms['login_form'].elements[ '{{ form.user_id.name }}' ].value === "")
+    document.forms['login_form'].elements[ '{{ form.user_id.name }}' ].focus();
+  else
+    document.forms['login_form'].elements[ '{{ form.password.name }}' ].focus();
+});
+</script>
+{% endblock %}
+

@@ -1,0 +1,87 @@
+/*@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);*/
+
+.custom-logo {
+	display: inline-block;
+	width: 120px;
+	margin: 0 10px;
+}
+
+.custom-center {
+	text-align: center;
+}
+
+.custom-login-form {
+	max-width: 320px;
+	padding: 15px;
+	margin: 0 auto;
+	background-color: white;
+	border: solid 1px;
+	border-color: rgb(200,200,200);
+	border-radius: 7px;
+}
+
+.custom-login-error {
+	max-width: 320px;
+	padding: 15px;
+	margin: 15px auto;
+	background-color: rgb(250,223,223);
+	border: solid 1px;
+	border-color: rgb(212,150,150);
+	border-radius: 7px;
+	color: rgb(165, 5, 5);
+}
+
+
+.custom-join-form {
+	max-width: 400px;
+	width: auto;
+	padding: 0px 20px 70px 20px;
+	margin: 0 auto;
+	background-color: white;
+	/*border: solid 1px;*/
+	border-color: rgb(200,200,200);
+	border-radius: 7px;
+}
+
+/* GLOBAL STYLES
+-------------------------------------------------- */
+/* Padding below the footer and lighter body text */
+
+body {
+	/*font-family: 'Nanum Gothic', sans-serif;*/
+	padding-top: 50px;
+	padding-bottom: 20px;
+	background-color: rgb(244,244,244);/*#5a5a5a;*/
+}
+
+
+/* CUSTOMIZE THE NAVBAR
+-------------------------------------------------- */
+
+/* Special class on .container surrounding .navbar, used for positioning it into place. */
+.navbar-wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 20;
+}
+.navbar-wrapper * {
+
+}
+
+/* Flip around the padding for proper display in narrow viewports */
+.navbar-wrapper > .container {
+  padding-right: 0;
+  padding-left: 0;
+}
+.navbar-wrapper .navbar {
+  padding-right: 20px;
+  padding-left: 20px;
+ 
+  background-color: rgb(50,50,50);
+}
+.navbar-wrapper .navbar .container {
+  width: auto;
+}
+

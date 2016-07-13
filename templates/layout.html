@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
   <!-- 위 3개의 메타 태그는 *반드시* head 태그의 처음에 와야합니다; 어떤 다른 콘텐츠들은 반드시 이 태그들 *다음에* 와야 합니다 -->
-  <title>나의 첫 웹사이트 개발</title>
+  <title>흑기사의 시타델</title>
 
   <!-- 부트스트랩 -->
   <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
@@ -13,7 +13,7 @@
   <!-- Custom styles for this template -->
   <!-- <link href="{{ url_for('static', filename='css/sticky-footer-navbar.css') }}" rel="stylesheet"> -->
   <link href="{{ url_for('static', filename='css/custom-citadel.css') }}" rel="stylesheet">
-
+  <link href="{{ url_for('static', filename='css/custom/login.css') }}" rel="stylesheet">
   <!-- IE8 에서 HTML5 요소와 미디어 쿼리를 위한 HTML5 shim 와 Respond.js -->
   <!-- WARNING: Respond.js 는 당신이 file:// 을 통해 페이지를 볼 때는 동작하지 않습니다. -->
   <!--[if lt IE 9]>
@@ -24,36 +24,62 @@
   {% block head %} 
   <!--    이 부분에 헤드 추가 콘텐츠가 들어갑니다 -->
   {% endblock %}
-
-
-<script type="text/javascript" src="/static/sh/scripts/shCore.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shLegacy.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushBash.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushCpp.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushCSharp.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushCss.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushDelphi.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushDiff.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushGroovy.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushJava.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushJScript.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushPhp.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushPlain.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushPython.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushRuby.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushScala.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushSql.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushVb.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushXml.js"></script>
-<link type="text/css" rel="stylesheet" href="/static/sh/styles/shCore.css">
-<link type="text/css" rel="stylesheet" href="/static/sh/styles/shThemeDefault.css">
-<script type="text/javascript"> SyntaxHighlighter.all(); </script>
-
 </head>
 
 <body Onload="dp.SyntaxHighlighter.HighlightAll('code');">
+
+{% block nav %}
+  <div class="navbar-wrapper">
+    <div class="container">
+
+      <nav class="navbar navbar-inverse navbar-static-top">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ url_for('forum',name='unity',page=1) }}">
+              <img src="{{ url_for('static', filename='img/logo_citadel.png') }}" class="custom-logo img-rounded">
+            </a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+  <!--             <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li class="divider"></li>
+                  <li class="dropdown-header">Nav header</li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">One more separated link</a></li>
+                </ul>
+              </li> -->
+            </ul>
+            <div class="navbar-right" style="display:inline-block; margin: 10px 50px">
+                {% if not session.user_info %}
+                  <a href="{{ url_for('login') }}" class="btn  btn-success">로그인</a>
+                {% else %}
+                  <a href="{{ url_for('profile') }}">{{ session.user_info.name }}</a> 님, 반갑습니다!
+                  <a href="{{ url_for('logout') }}" class="btn  btn-normal">로그아웃</a>
+                {% endif %}
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>  
+{% endblock %}
+
   <!-- Load Facebook SDK for JavaScript -->
-  <div id="fb-root"></div>
+<!--   <div id="fb-root"></div>
   <script>(function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
@@ -62,6 +88,9 @@
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
   </script>
+ -->
+
+
 
  <!--  
   <nav class="navbar navbar-default">
@@ -99,17 +128,8 @@
    -->
 
   <div class="container">
-    <div class="row">
-      <div class="col-md-10 col-md-offset-1">
-        <p class="text-right">
-          {% if not session.user_info %}
-            <a href="{{ url_for('login') }}" class="btn btn-sm btn-success">로그인</a>
-          {% else %}
-            안녕하세요, {{ session.user_info.nickname }} 님.
-            <a href="{{ url_for('logout') }}" class="btn btn-sm btn-normal">로그아웃</a>
-          {% endif %}
-        </p>
-
+    <div class="row" style="padding-top:50px; padding-bottom: 50px;">
+      <div class="col-md-8 col-md-offset-2">
         {% block body %} 
         <!--  이 부분에 바디 콘텐츠들이 들어갑니다 -->
         {% endblock %}
@@ -117,12 +137,14 @@
     </div>
   </div>
 
-  <!-- Footer -->
-<!--   <footer class="footer">
-    <div class="container">
-      <p class="text-muted">Place sticky footer content here.</p>
-    </div>
-  </footer> -->
+  <!-- FOOTER -->
+  <div class="container">
+    <footer>
+      <!-- <div class="col-md-8 col-md-offset-2"> -->
+      <p class="pull-right"><a href="#">Back to top</a></p>
+      <p>&copy; 2016 Jinho Mang &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+    </footer>    
+  </div>
 </body>
 
 <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
@@ -130,7 +152,9 @@
 <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
 <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
-
+{% block script %}
+<!--  이 부분에 스크립트 -->
+{% endblock %}
 
 </html>
 

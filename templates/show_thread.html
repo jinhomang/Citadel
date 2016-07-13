@@ -1,14 +1,15 @@
 {% extends "layout.html" %}기
 
-{% import 'editor.html' as editor %}
+{% import 'macro_editor.html' as macro_editor %}
+{% import 'macro_sh.html' as macro_sh %}
 
 {% block head %}
-	{{ editor.resource() }}
+	{{ macro_editor.resource() }}
 {% endblock %}
 
 {% block body %}
 <table class="table table-striped">
-	<tr>
+	<tr style="background-color: rgb(215, 235, 252);">
 		<td><h3 class="panel-title">{{ thread.title }}</h3></td>
 	</tr>
 	{% for (msg, author) in messages %}
@@ -19,7 +20,7 @@
 	        	<div class="col-xs-12 col-md-2">		        		
 	        		<div class="row">
 	        			<div class="col-xs-12 col-md-12">{{ author.nickname }}</div>
-						<div class="col-xs-3 col-md-12"><img src="/static/img/avatar_m.png" alt="http://placehold.it/96x96"/ class="message-profile"></div>
+						<div class="col-xs-3 col-md-12"><img src="/static/img/avatar_m.png" alt="http://placehold.it/96x96" class="message-profile"></div>
 						<div class="col-xs-9 col-md-12">
 							<small>초보 lv.12 <br/>포인트: {{ author.trophy_point }}<br/>메시지: {{ author.message_count }}<br/></small>
 						</div>
@@ -53,31 +54,23 @@
 	        	<div class="col-xs-12 col-md-2">		        		
 	        		<div class="row">
 	        			<div class="col-xs-12 col-md-12"> <b> {{ session.user_info['nickname'] }} </b> </div>
-						<div class="col-xs-12 col-md-12"><img src="/static/img/avatar_m.png" alt="http://placehold.it/96x96"/ class="message-profile"></div>
+						<div class="col-xs-12 col-md-12"><img src="/static/img/avatar_m.png" alt="http://placehold.it/96x96" class="message-profile"></div>
 					</div>
 	        	</div>
         		<div class="col-xs-12 col-md-10">
 						{% if session.user_info %}
-							{{ editor.form(name='add_message_editor', submit_url=url_for('add_message', thread_id=thread.id), submit_label='댓글 달기', hide_cancel=True, initHeight=200) }}
+							{{ macro_editor.form(name='add_message_editor', submit_url=url_for('add_message', thread_id=thread.id), submit_label='댓글 달기', hide_cancel=True, initHeight=200) }}
 						{% endif %}
-<!-- 						<form action="{{ url_for('add_message', thread_id=thread.id) }}" method=post>
-						{% if form.errors %}
-						<ul class="error">
-					    	{% for field_name, field_errors in form.errors|dictsort if field_errors %}
-					        	{% for error in field_errors %}
-					          	<li>{{ form[field_name].label }}: {{ error }}</li>
-					        	{% endfor %}
-					    	{% endfor %}
-						</ul>
-						{% endif %}
-				 		<span>{{ form.content.label }}: {{ form.content() }}</span>   
-						<div>{{ form.submit() }}</div>
-					</form>
- -->				</div>
+				</div>
 			</div>
 		</td>
 	</tr>
 	{% endif %}
 </table>
-
 {% endblock %}
+
+{% block script %}
+	{{ macro_sh.loadSyntaxHighlighter() }}
+{% endblock %}
+	
+

@@ -1,6 +1,0 @@
-[Wed Jul 06 08:52:46.552096 2016] [wsgi:error] [pid 28890] [client 192.168.0.9:63747] mod_wsgi (pid=28890): Exception occurred processing WSGI script '/Users/jinho/Citadel/citadel.wsgi'., referer: http://192.168.0.6:505/thread/220
-[Wed Jul 06 08:52:46.556440 2016] [wsgi:error] [pid 28890] [client 192.168.0.9:63747] IOError: Apache/mod_wsgi failed to write response data: Broken pipe., referer: http://192.168.0.6:505/thread/220
-[Wed Jul 06 08:52:59.295804 2016] [wsgi:error] [pid 22245] [client 192.168.0.9:63765] mod_wsgi (pid=22245): Exception occurred processing WSGI script '/Users/jinho/Citadel/citadel.wsgi'., referer: http://192.168.0.6:505/thread/220
-[Wed Jul 06 08:52:59.312268 2016] [wsgi:error] [pid 22245] [client 192.168.0.9:63765] IOError: Apache/mod_wsgi failed to write response data: Broken pipe., referer: http://192.168.0.6:505/thread/220
-[Wed Jul 06 09:07:19.152048 2016] [wsgi:error] [pid 29435] [client 192.168.0.9:63942] mod_wsgi (pid=29435): Exception occurred processing WSGI script '/Users/jinho/Citadel/citadel.wsgi'., referer: http://192.168.0.6:505/thread/220
-[Wed Jul 06 09:07:19.160490 2016] [wsgi:error] [pid 29435] [client 192.168.0.9:63942] IOError: Apache/mod_wsgi failed to write response data: Broken pipe., referer: http://192.168.0.6:505/thread/220

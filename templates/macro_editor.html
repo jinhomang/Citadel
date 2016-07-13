@@ -41,9 +41,11 @@
 		<form name="{{ tx_editor_form }}" id="tx_editor_form" action="{{ submit_url }}" method="post" accept-charset="utf-8">
 			{% if hide_title==False %}
 			<div class="form-horizontal form-group">
-				<label for="title" class="col-sm-1 control-label">제목</label>
-				<div class="col-sm-11">
-					<input type="text" id="title" name="title" class="form-control" placeholder="제목을 입력하세요"><br/>
+				<div class="row">
+					<label for="ed_title" for="ed_title" class="col-sm-2 control-label">제목</label>
+					<div class="col-sm-9">
+						<input type="text" id="ed_title" name="ed_title" class="col-sm-2 form-control" placeholder="제목을 입력하세요">
+					</div>
 				</div>
 			</div>
 			{% endif %}
@@ -560,16 +562,17 @@
 	 * @returns {Boolean} 모든 데이터가 유효할 경우에 true
 	 */
 	function validForm(editor) {
-		// Place your validation logic here
+		var validator = new Trex.Validator();
+
 		{% if hide_title==False %}
-		var title = document.getElementById('title');
-		if (title.value ==="")  {
+		var title = document.getElementById('ed_title');
+		if (!validator.exists(title.value))  {
 			alert('제목을 입력하세요');
 			return false;
 		}
 		{% endif %}
 
-		var validator = new Trex.Validator();
+		
 		var content = editor.getContent();
 		if (!validator.exists(content)) {
 			alert('내용을 입력하세요');

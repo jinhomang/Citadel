@@ -1,12 +1,15 @@
 {%extends "layout.html"%}
-{%block body%}
-<h1>{{ name }} forum</h1>
 
-{% if session.user_info %}
+{%block body%}
+<h2 class="page-header">{{ name }} 포럼</h2>
+
 <p class="text-right">
+{% if session.user_info %}
   <a href="{{ url_for('create_thread') }}" class="btn btn-success" role="button">새 쓰레드 생성</a><br/>
-</p>
+{% else %}
+  <a href="{{ url_for('login') }}" class="btn btn-success" role="button">새 쓰레드 생성</a><br/>
 {% endif %}
+</p>
 
 <div class="row col-xs-12 col-md-12">
   {% if start_page_idx == 0 %} 시작 {% endif %}
@@ -71,10 +74,12 @@
   {% if end_page_idx == total_pages %} 끝 {% endif %}
 </div>
 
-{% if session.user_info %}
 <p class="text-right">
+{% if session.user_info %}
   <a href="{{ url_for('create_thread') }}" class="btn btn-success" role="button">새 쓰레드 생성</a><br/>
-</p>
+{% else %}
+  <a href="{{ url_for('login') }}" class="btn btn-success" role="button">새 쓰레드 생성</a><br/>
 {% endif %}
+</p>
 
 {% endblock %}

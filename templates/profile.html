@@ -1,0 +1,23 @@
+{%extends "layout.html"%}
+
+
+{% block body %}
+<div class="page-header"> <h4><strong>{{ session.user_info.name }}</strong> 님의 프로필</h4></div>
+
+<div class="row">
+	<div class="col-xs-12 col-md-2">
+		<img src="/static/img/avatar_m.png" alt="http://placehold.it/96x96" class="img-rounded message-profile">
+	</div>
+	<div class="col-xs-12 col-md-10">
+		<dl class="dl-horizontal">
+		  <dt>이름</dt>
+		  <dd>{{ session.user_info.name }}</dd>
+		  <dt>홈페이지</dt>
+		  <dd>{{ session.user_info.homepage }}</dd>
+		  <dt>위치</dt>
+		  <dd>{{ session.user_info.location }}</dd>
+		  <dt>직업</dt>
+		  <dd>{{ session.user_info.occupation }}</dd>
+		</dl>
+	</div>
+{% endblock %}

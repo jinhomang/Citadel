@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Syntax Highlighter</title>
+</head>
+<body></body>
+
+{% macro loadSyntaxHighlighter() -%}
+<script type="text/javascript" src="/static/sh/scripts/shCore.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shLegacy.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushBash.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushCpp.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushCSharp.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushCss.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushDelphi.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushDiff.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushGroovy.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushJava.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushJScript.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushPhp.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushPlain.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushPython.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushRuby.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushScala.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushSql.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushVb.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shBrushXml.js"></script>
+<link type="text/css" rel="stylesheet" href="/static/sh/styles/shCore.css">
+<link type="text/css" rel="stylesheet" href="/static/sh/styles/shThemeDefault.css">
+<script type="text/javascript"> SyntaxHighlighter.all(); </script>
+{%- endmacro %}
+</html>

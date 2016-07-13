@@ -39,48 +39,43 @@ app.config.from_object(__name__)
 
 
 # Forms #################################################################################
-class RegistUserForm(Form):
-	user_id = TextField('아이디', 
-		[validators.Length(min=2, max=64), validators.Email()], 
-		default = 'example@mail.com')
+class JoinForm(Form):
+	user_id = TextField('이메일 주소', 
+		[validators.Length(min=2, max=64), validators.Email()])
 	name = TextField('이름', 
-		[validators.Length(min=2, max=64)], 
-		default ='홍길동')
-	nickname = TextField('별명',
-		[validators.Length(min=1, max=32)], 
-		default='신출귀몰')
+		[validators.Length(min=2, max=64)])
+	# nickname = TextField('별명',
+	# 	[validators.Length(min=1, max=32)], 
+	# 	default='신출귀몰')
 	password = PasswordField('패스워드',
 		[validators.Length(min=6, max=128)])
-	homepage = TextField('홈페이지',
-    	[validators.Length(min=2, max=128), validators.URL()])
-	location = TextField('지역',
-    	[validators.Length(min=2, max=64)])
-	occupation = TextField('직업',
-    	[validators.Length(min=2, max=64)])
-	interact = TextField('연락처', 
-		[validators.Length(min=2, max=64)])
-	submit = SubmitField('등록')
-	accept_rules = BooleanField('약관 동의', 
-		[validators.Required()])
+	# homepage = TextField('홈페이지',
+ #    	[validators.Length(min=2, max=128), validators.URL()])
+	# location = TextField('지역',
+ #    	[validators.Length(min=2, max=64)])
+	# occupation = TextField('직업',
+ #    	[validators.Length(min=2, max=64)])
+	# interact = TextField('연락처', 
+	# 	[validators.Length(min=2, max=64)])
+	submit = SubmitField('가입하기')
 
 class LoginForm(Form):
-	user_id = TextField('아이디', 
-		[validators.Length(min=2, max=64), validators.Email()])
+	user_id = TextField('이메일')
 	password = PasswordField('패스워드')
 	submit = SubmitField('로그인')
 
-class CreateThreadForm(Form):
-	title = TextField('제목', [validators.Length(min=1, max=32)])
-	content = TextAreaField('내용', [validators.Length(min=1)])
-	submit = SubmitField('생성')
+# class CreateThreadForm(Form):
+# 	title = TextField('제목', [validators.Length(min=1, max=32)])
+# 	content = TextAreaField('내용', [validators.Length(min=1)])
+# 	submit = SubmitField('생성')
 
-class AddMessageForm(Form):
-	content = TextAreaField('댓글', [validators.Length(min=1)])
-	submit = SubmitField('추가')	
+# class AddMessageForm(Form):
+# 	content = TextAreaField('댓글', [validators.Length(min=1)])
+# 	submit = SubmitField('추가')	
 
-class UpdatesMessageForm(Form):
-	content = TextAreaField('내용', [validators.Length(min=1)])
-	submit = SubmitField('수정')	
+# class UpdatesMessageForm(Form):
+# 	content = TextAreaField('내용', [validators.Length(min=1)])
+# 	submit = SubmitField('수정')	
 
 # FB ################################################################################
 @app.route('/fb_test')
@@ -88,24 +83,56 @@ def fb_test():
 	return render_template('fb_test.html')
 
 # Regist ################################################################################
-@app.route('/regist_user', methods = ['GET', 'POST'])
-def regist_user():
+# @app.route('/regist_user', methods = ['GET', 'POST'])
+# def regist_user():
+# 	error = None
+# 	regist_form = RegistUserForm(request.form)
+# 	if request.method == 'POST' and regist_form.validate():
+# 		if dbs.query(Member).filter(Member.user_id == regist_form['user_id'].data).count() > 0:
+# 			error = errorMsg['user_id_duplicated']
+# 			dbs.close()
+# 		else:
+# 			try:
+# 				new_member = Member(user_id=regist_form['user_id'].data,
+# 								name=regist_form['name'].data,
+# 								nickname=regist_form['nickname'].data,
+# 								password=regist_form['password'].data,
+# 								homepage=regist_form['homepage'].data,
+# 								location=regist_form['location'].data,
+# 								occupation=regist_form['occupation'].data,
+# 								interact=regist_form['interact'].data,
+# 								cgroup='관리자')
+# 				dbs.add(new_member)
+# 				dbs.commit()
+# 			except Exception as e:
+# 				error = errorMsg['database_exception'] + str(e)
+# 				dbs.f()
+# 				raise e
+# 			else:				
+# 				return redirect(url_for('main'))	
+# 			finally: 
+# 				dbs.close()
+			
+# 	else:
+# 		return render_template('regist_user.html', form=regist_form, err=error)
+@app.route('/join', methods = ['GET', 'POST'])
+def join():
+	if session.get('user_info'):
+		return redirect( url_for('main'))
+
 	error = None
-	regist_form = RegistUserForm(request.form)
+	regist_form = JoinForm(request.form)
 	if request.method == 'POST' and regist_form.validate():
 		if dbs.query(Member).filter(Member.user_id == regist_form['user_id'].data).count() > 0:
 			error = errorMsg['user_id_duplicated']
 			dbs.close()
 		else:
 			try:
-				new_member = Member(user_id=regist_form['user_id'].data,
+				new_member = Member(
+								user_id=regist_form['user_id'].data,
 								name=regist_form['name'].data,
-								nickname=regist_form['nickname'].data,
+								nickname=regist_form['name'].data,
 								password=regist_form['password'].data,
-								homepage=regist_form['homepage'].data,
-								location=regist_form['location'].data,
-								occupation=regist_form['occupation'].data,
-								interact=regist_form['interact'].data,
 								cgroup='관리자')
 				dbs.add(new_member)
 				dbs.commit()
@@ -118,8 +145,8 @@ def regist_user():
 			finally: 
 				dbs.close()
 			
-	else:
-		return render_template('regist_user.html', form=regist_form, err=error)
+	return render_template('join.html', form=regist_form, err=error)
+
 
 
 # Login/Logout ##########################################################################
@@ -128,6 +155,9 @@ def alc2json(row):
 
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
+	if session.get('user_info'):
+		return redirect( url_for('main'))
+
 	error = None
 	login_form = LoginForm(request.form)
 	if request.method == 'POST' and login_form.validate():
@@ -147,11 +177,19 @@ def login():
 
 	return render_template('login.html', form=login_form, err=error)
 
+
 @app.route('/logout')
 def logout():
 	session.clear()
 	return redirect(url_for('main'))
 
+# View Profile ##########################################################################
+@app.route('/profile')
+def profile():
+	if not session.get('user_info'):
+		return redirect(url_for('main'))
+
+	return render_template('profile.html')
 
 # Create thread #########################################################################
 @app.route('/create_thread', methods = ['GET','POST'])
@@ -159,34 +197,10 @@ def create_thread():
 	if not session.get('user_info'):
 		abort(403)
 
-
-	#create_form = CreateThreadForm(request.form)
-	# if request.method == 'POST' and create_form.validate():
-	# 	try:
-	# 		new_thread = Thread()
-	# 		setattr(new_thread, 'title', create_form['title'].data)
-	# 		setattr(new_thread, 'views', 0)
-	# 		setattr(new_thread, 'replies', 0)			
-	# 		first_message = Message()
-	# 		setattr(first_message, 'content', create_form['content'].data)
-	# 		setattr(first_message, 'author_id', session['user_info']['id'])
-	# 		setattr(first_message, 'thread', new_thread)
-	# 		setattr(first_message, 'date', datetime.today().strftime('%Y-%m-%d %H:%M:%S'))
-	# 		dbs.add(new_thread)
-	# 		dbs.add(first_message)
-	# 		dbs.commit()
-	# 	except Exception as e:
-	# 		error = errorMsg['database_exception'] + str(e)
-	# 		dbs.rollback()
-	# 		raise e
-	# 	else:
-	# 		return redirect(url_for('main'))
-	# 	finally: 
-	# 		dbs.close()
 	if request.method == 'POST':
 		try:
 			new_thread = Thread()
-			setattr(new_thread, 'title', request.form['title'])
+			setattr(new_thread, 'title', request.form['ed_title'])
 			setattr(new_thread, 'views', 0)
 			setattr(new_thread, 'replies', 0)			
 			first_message = Message()
@@ -254,8 +268,7 @@ def update_message(thread_id, message_id):
 	if not session.get('user_info'):
 		abort(403)
 
-	# message_form = UpdatesMessageForm(request.form)
-	if request.method == 'POST': # and message_form.validate():
+	if request.method == 'POST':
 		try:
 			updated_message = dbs.query(Message).filter(Message.id == message_id).filter(Message.author_id == session['user_info']['id']).one()
 			setattr(updated_message, 'content', request.form['content'])
@@ -277,9 +290,9 @@ def update_message(thread_id, message_id):
 			dbs.close()
 	else:
 		message = dbs.query(Message).filter(Message.id == message_id).one()
+		thread = alc2json(message.thread)
 		dbs.close()
-		# return redirect(url_for('show_thread', id=thread_id))
-		return render_template('update_message.html', thread_id=thread_id, message_id=message_id, content=message.content)
+		return render_template('update_message.html', thread=thread, message_id=message_id, content=message.content)
 
 
 
@@ -326,10 +339,10 @@ def show_thread(id):
 
 		thread = alc2json(this_thread)
 		messages = [(alc2json(msg), alc2json(msg.author)) for msg in this_thread.messages]
-		message_form = AddMessageForm(request.form)
+		# message_form = AddMessageForm(request.form)
 		dbs.close()
 
-		return render_template('show_thread.html', thread=thread, messages=messages, form=message_form)	
+		return render_template('show_thread.html', thread=thread, messages=messages)#, form=message_form)	
 
 	return redirect('main')
 

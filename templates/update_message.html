@@ -1,15 +1,16 @@
-{% extends "layout.html" %}
+{% extends 'layout.html' %}
 
-{% import 'editor.html' as editor %}
+{% import 'macro_editor.html' as macro_editor %}
 
 {% block head %}
-	{{ editor.resource() }}
+	{{ macro_editor.resource() }}
 {% endblock %}
 
 {% block body %}
 	{% if session.user_info %}
-		{{ editor.form(name='update_message_editor', submit_url=url_for('update_message', thread_id=thread_id, message_id=message_id), cancel_url=url_for('show_thread', id=thread_id), submit_label='수정') }}
-		{{ editor.load_content( content | safe ) }}
+	<div class="page-header"> <h4>{{ thread.title }}</h4></div>
+		{{ macro_editor.form(name='update_message_editor', submit_url=url_for('update_message', thread_id=thread.id, message_id=message_id), cancel_url=url_for('show_thread', id=thread.id), submit_label='수정') }}
+		{{ macro_editor.load_content( content | safe ) }}
 	{% else %}
 		잘못된 접근입니다.
 	{% endif %}

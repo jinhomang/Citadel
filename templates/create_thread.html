@@ -1,14 +1,14 @@
 {% extends 'layout.html' %}
 
-{% import 'editor.html' as editor %}
+{% import 'macro_editor.html' as macro_editor %}
 
 {% block head %}
-	{{ editor.resource() }}
+	{{ macro_editor.resource() }}
 {% endblock %}
 
 {% block body %}
 	{% if session.user_info %}
-		{{ editor.form(name='create_thread_editor', submit_url=url_for('create_thread'), cancel_url=url_for('forum', name='unity', page=1), submit_label='생성', hide_title=False) }}
+		{{ macro_editor.form(name='create_thread_editor', submit_url=url_for('create_thread'), cancel_url=url_for('forum', name='unity', page=1), submit_label='생성', hide_title=False) }}
 	{% else %}
 		잘못된 접근입니다.
 	{% endif %}
