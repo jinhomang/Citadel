@@ -29,7 +29,7 @@
 </head>
 <body>
 
-{% macro form(name='tx_editor_form', submit_url='#', cancel_url='#', hide_title=True, submit_label='확인', hide_cancel=False, cancel_label='취소', initHeight=300) -%}
+{% macro form(name='tx_editor_form', submit_url='#', cancel_url='#', hide_title=True, submit_label='확인', hide_cancel=False, cancel_label='취소', initHeight=300, submit_icon='') -%}
 <div class="row">
 	<div class="col-xs-12 col-md-12">		        		        
 		<div class="body">
@@ -479,7 +479,8 @@
 	</div>
 
 	<div class="col-xs-12 col-md-12 text-right" style="margin: 3px;">		        		        
-		<button type="button" onclick="saveContent()" class="btn btn-success">{{ submit_label }}</button>
+		<button type="button" onclick="saveContent()" class="btn btn-success">
+			<span class="{{ submit_icon }}"></span> {{ submit_label }}</button>
 		{% if hide_cancel==False %}
 		<span><a href="{{ cancel_url }}" class="btn btn-default" role="button">{{ cancel_label }}</a></span>
 		{% endif %}

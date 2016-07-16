@@ -9,15 +9,17 @@ from flask import Flask, request, redirect, url_for, render_template, flash, ses
 from wtforms import Form, TextField, BooleanField, PasswordField, \
 HiddenField, SubmitField, TextAreaField, validators
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
-from alchemy_test import Base, Member, Thread, Message
+from alchemy_citadel import Base, Member, Profile, Thread, Message
+
+from flask_util_js import FlaskUtilJs
 
 DEBUG = True
 SECRET_KEY = 'development key'
 
 # db ####################################################################################
-engine = create_engine('mysql://root:jh781208@localhost/test?charset=utf8&use_unicode=0')
+engine = create_engine('mysql://root:jh781208@localhost/citadel?charset=utf8&use_unicode=0')
 Base.metadata.bind = engine
 
 DBsession = sessionmaker(bind=engine)
@@ -37,27 +39,36 @@ errorMsg = dict([('database_exception', '데이터베이스 오류가 발생했�
 app = Flask(__name__)
 app.config.from_object(__name__)
 
+# FlaskUtilJs ###########################################################################
+fujs = FlaskUtilJs(app)
+@app.context_processor
+def inject_fujs():
+	return dict(fujs=fujs)
 
 # Forms #################################################################################
+
+user_id_validators = [validators.Length(min=2, max=64), validators.Email()]
+user_name_validators = [validators.Length(min=2, max=64)]
+password_validators = [validators.Length(min=6, max=128)]
+
 class JoinForm(Form):
-	user_id = TextField('이메일 주소', 
-		[validators.Length(min=2, max=64), validators.Email()])
-	name = TextField('이름', 
-		[validators.Length(min=2, max=64)])
-	# nickname = TextField('별명',
-	# 	[validators.Length(min=1, max=32)], 
-	# 	default='신출귀몰')
-	password = PasswordField('패스워드',
-		[validators.Length(min=6, max=128)])
-	# homepage = TextField('홈페이지',
- #    	[validators.Length(min=2, max=128), validators.URL()])
-	# location = TextField('지역',
- #    	[validators.Length(min=2, max=64)])
-	# occupation = TextField('직업',
- #    	[validators.Length(min=2, max=64)])
-	# interact = TextField('연락처', 
-	# 	[validators.Length(min=2, max=64)])
+	user_id = TextField('이메일 주소', user_id_validators)
+	name = TextField('이름', user_name_validators)
+	password = PasswordField('패스워드', password_validators)
 	submit = SubmitField('가입하기')
+
+class ProfileForm(Form):
+	name = TextField('이름', user_name_validators)
+	bio = TextAreaField('바이오그래피', [validators.Length(max=256)])
+	url = TextField('URL', [validators.Length(max=128), validators.URL()])
+	contact = TextField('연락처', [validators.Length(max=32)])
+	location = TextField('지역', [validators.Length(max=32)])
+	picture = TextField('사진', [validators.Length(max=128)])
+	# submit = SubmitField('수정완료')
+
+class UpdatePasswordForm(Form):
+	new_password = PasswordField('새로운 패스워드', password_validators)
+	confirm_password = PasswordField('패스워드 재입력')
 
 class LoginForm(Form):
 	user_id = TextField('이메일')
@@ -77,7 +88,14 @@ class LoginForm(Form):
 # 	content = TextAreaField('내용', [validators.Length(min=1)])
 # 	submit = SubmitField('수정')	
 
-# FB ################################################################################
+#########################################################################################
+# @app.teardown_request
+# def session_clear(exception=None):
+#     session.remove()
+#     if exception and session.is_active:
+#         session.rollback()
+
+# FB ####################################################################################
 @app.route('/fb_test')
 def fb_test():
 	return render_template('fb_test.html')
@@ -134,6 +152,7 @@ def join():
 								nickname=regist_form['name'].data,
 								password=regist_form['password'].data,
 								cgroup='관리자')
+				new_member.profile = Profile()
 				dbs.add(new_member)
 				dbs.commit()
 			except Exception as e:
@@ -183,13 +202,55 @@ def logout():
 	session.clear()
 	return redirect(url_for('main'))
 
-# View Profile ##########################################################################
+
+# View profile ##########################################################################
 @app.route('/profile')
 def profile():
 	if not session.get('user_info'):
 		return redirect(url_for('main'))
 
-	return render_template('profile.html')
+	user = dbs.query(Member).filter(Member.id == session['user_info']['id']).one()
+	session['user_info'] = alc2json(user)
+
+	profile = alc2json(dbs.query(Profile).filter(Profile.owner_id == session['user_info']['id']).one())
+	dbs.close()
+
+	return render_template('profile.html', profile=profile)
+
+
+# Edit profile ##########################################################################
+@app.route('/edit_profile', methods = ['GET', 'POST'])
+def edit_profile():
+	if not session.get('user_info'):
+		return redirect(url_for('main'))
+
+	form = ProfileForm(request.form)
+	if request.method == 'POST':	
+		try:
+			# session['user_info'].name = form['name'].data
+			updated_profile = dbs.query(Profile).filter(Profile.owner_id == session['user_info']['id']).one()
+			updated_profile.picture = form['picture'].data
+			updated_profile.url = form['url'].data
+			updated_profile.contact = form['contact'].data
+			updated_profile.location = form['location'].data
+			updated_profile.bio = form['bio'].data
+
+			dbs.add(updated_profile)
+			dbs.commit()
+		except Exception as e:
+			error = errorMsg['database_exception'] + str(e)
+			dbs.rollback()
+			raise e
+		else:
+			return redirect(url_for('profile'))
+		finally: 
+			dbs.close()
+	else:
+		profile = alc2json(dbs.query(Profile).filter(Profile.owner_id == session['user_info']['id']).one())
+		dbs.close()
+		
+	return render_template('edit_profile.html', form=form, profile=profile)
+
 
 # Create thread #########################################################################
 @app.route('/create_thread', methods = ['GET','POST'])
@@ -203,14 +264,17 @@ def create_thread():
 			setattr(new_thread, 'title', request.form['ed_title'])
 			setattr(new_thread, 'views', 0)
 			setattr(new_thread, 'replies', 0)			
+
 			first_message = Message()
-			setattr(first_message, 'content', request.form['content'])
-			setattr(first_message, 'author_id', session['user_info']['id'])
-			setattr(first_message, 'thread', new_thread)
-			setattr(first_message, 'date', datetime.today().strftime('%Y-%m-%d %H:%M:%S'))
-			dbs.add(new_thread)
+			first_message.thread = new_thread;
+			first_message.author = dbs.query(Member).filter(session['user_info']['id'] == Member.id).one()
+			first_message.author.message_count +=1
+			first_message.content = request.form['content']
+			first_message.date = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+
 			dbs.add(first_message)
-			dbs.commit()
+			dbs.commit()			
+
 		except Exception as e:
 			error = errorMsg['database_exception'] + str(e)
 			dbs.rollback()
@@ -235,21 +299,16 @@ def add_message(thread_id):
 	if not session.get('user_info'):
 		abort(403)
 
-	# reply_form = AddMessageForm(request.form)
-	# if reply_form.validate():
-
 	try:
 		new_message = Message()
-		setattr(new_message, 'content', request.form['content']) #reply_form['content'].data)
-		setattr(new_message, 'author_id', session['user_info']['id'])
-		setattr(new_message, 'thread_id', thread_id)
-		setattr(new_message, 'date',  datetime.today().strftime('%Y-%m-%d %H:%M:%S'))
+		new_message.content = request.form['content']
+		new_message.date = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+		new_message.thread = dbs.query(Thread).filter(Thread.id == thread_id).one()
+		new_message.thread.replies +=1 #len(new_message.thread.messages)
+		new_message.author = dbs.query(Member).filter(session['user_info']['id'] == Member.id).one()
+		new_message.author.message_count +=1
+
 		dbs.add(new_message)
-
-		this_thread = dbs.query(Thread).filter(Thread.id == thread_id).one()
-		this_thread.replies = len(this_thread.messages)
-		dbs.add(this_thread)
-
 		dbs.commit()
 
 	except Exception as e:
@@ -274,11 +333,6 @@ def update_message(thread_id, message_id):
 			setattr(updated_message, 'content', request.form['content'])
 			setattr(updated_message, 'date', datetime.today().strftime('%Y-%m-%d %H:%M:%S'))
 			dbs.add(updated_message)
-
-			this_thread = dbs.query(Thread).filter(Thread.id == thread_id).one()
-			this_thread.replies = len(this_thread.messages)
-			dbs.add(this_thread)
-
 			dbs.commit()
 		except Exception as e:
 			error = errorMsg['database_exception'] + str(e)
@@ -307,12 +361,10 @@ def delete_message(thread_id, message_id):
 		if q.count() == 0:
 			error = errorMsg['delete_message_error'] 
 		else:
-			dbs.delete(q.one())
-
-			this_thread = dbs.query(Thread).filter(Thread.id == thread_id).one()
-			this_thread.replies = len(this_thread.messages)
-			dbs.add(this_thread)
-
+			message = q.one()
+			message.thread.replies = max(0, message.thread.replies - 1) #len(new_message.thread.messages)
+			message.author.message_count = max(0, message.author.message_count - 1)
+			dbs.delete(message)
 			dbs.commit()
 	except Exception as e:
 		error = errorMsg['database_exception'] + str(e)	
@@ -366,12 +418,12 @@ def forum(name, page):
 	cur_page_idx = min(int(page)-1, max(0, total_pages-1))
 	first_row_idx = cur_page_idx * page_rows
 	last_row_idx = min(first_row_idx + page_rows, total_rows)
-	q = dbs.query(Thread).slice(first_row_idx, last_row_idx)
+	q = dbs.query(Thread).order_by(desc(Thread.id))[first_row_idx : last_row_idx]
 	threads = [(alc2json(thread), alc2json(thread.messages[0]), alc2json(thread.messages[0].author)) for thread in q]
 
 	dbs.close()
 
-	max_page_display = 5
+	max_page_display = 10
 	start_page_idx = (cur_page_idx / max_page_display) * max_page_display
 	end_page_idx = min(start_page_idx + max_page_display, total_pages)
 
@@ -380,7 +432,7 @@ def forum(name, page):
 							threads=threads, 
 							total_pages=total_pages, 
 							start_page_idx=start_page_idx,
-							end_page_idx=end_page_idx)
+							end_page_idx=end_page_idx, cur_page_idx=cur_page_idx)
 
 @app.route('/editor')
 def editor():

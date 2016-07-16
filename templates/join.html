@@ -6,11 +6,7 @@
 
 {% block body %}
 <form action="{{ url_for('join') }}" name="join_form" id = "join_form" class="custom-join-form" method=post>
-
-  <h2 class="page-header">가입하기</h2>
-
-  <p class="custom-center"><h5>시타델 커뮤니티를 경험해 보세요. </h5></p>
-
+  <h3 class="page-header">가입하기<br/><small>시타델 커뮤니티를 경험해 보세요.</small></h3>
   <dl class="form-group">
     <dt>
       <div>
@@ -19,7 +15,7 @@
     </dt>
     <dd>
       <div>
-        {{ form.user_id(class="form-control", type="email") }}
+        {{ form.user_id(class="form-control", type="email", placeholder="아이디로 사용할 이메일을 입력하세요", autofocus="autofocus") }}
       </div>
       {% if form.user_id.errors %}
         {% for error in form.user_id.errors  %}
@@ -37,7 +33,7 @@
     </dt>
     <dd>
       <div>
-        {{ form.password(class="form-control") }}
+        {{ form.password(class="form-control", placeholder="패스워드는 6글자 이상으로 설정해 주세요") }}
       </div>
       {% if form.password.errors %}
         {% for error in form.password.errors  %}
@@ -55,7 +51,7 @@
     </dt>
     <dd>
       <div>
-        {{ form.name(class="form-control") }}
+        {{ form.name(class="form-control", placeholder="커뮤니티 안에서 사용할 이름을 입력하세요") }}
       </div>
       {% if form.name.errors %}
         {% for error in form.name.errors  %}

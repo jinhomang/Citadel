@@ -1,23 +1,39 @@
 {%extends "layout.html"%}
 
-
 {% block body %}
-<div class="page-header"> <h4><strong>{{ session.user_info.name }}</strong> 님의 프로필</h4></div>
+<div class="page-header"> <h2>프로필</h2></div>
+<div class="row" style="color:rgb(100,100,100);">
+	<div class="col-xs-12 col-md-5">
+		<img src="/static/img/avatar_m.png" alt="http://placehold.it/96x96" class="img-rounded"><br/>
+		<h4><strong>{{ session.user_info.name }}</strong></h4>
 
+		{{ session.user_info.picture }}
+	</div>
+	<div class="col-xs-12 col-md-7">
+		<h5 class="text-left">바이오그래피</h5>
+		<!-- {{ profile.bio }} -->
+	</div>
+</div>
+<div class="row" style="color:rgb(100,100,100);">
+	<div class="col-xs-12 col-md-5">
+		<div><span class="glyphicon glyphicon-envelope"></span>&nbsp; {{ session.user_info.user_id }}</div>
+		<div><span class="glyphicon glyphicon-link"></span>&nbsp; {{ profile.url }}</div>
+		<div><span class="glyphicon glyphicon-map-marker"></span>&nbsp; {{ profile.location }}</div>
+		<div><span class="glyphicon glyphicon-phone"></span>&nbsp; {{ profile.contact }}</div>
+		<br/>	
+	</div> 
+	<div class="col-xs-12 col-md-7" style="color:rgb(50,110,190);">
+		<div><span class="glyphicon glyphicon-comment"></span> 작성 메시지 개수: {{ session.user_info.message_count }}</div>
+		<div><span class="glyphicon glyphicon-thumbs-up"></span> 좋아요 개수: {{ session.user_info.like_received }}</div>
+	</div>
+</div>
 <div class="row">
-	<div class="col-xs-12 col-md-2">
-		<img src="/static/img/avatar_m.png" alt="http://placehold.it/96x96" class="img-rounded message-profile">
-	</div>
-	<div class="col-xs-12 col-md-10">
-		<dl class="dl-horizontal">
-		  <dt>이름</dt>
-		  <dd>{{ session.user_info.name }}</dd>
-		  <dt>홈페이지</dt>
-		  <dd>{{ session.user_info.homepage }}</dd>
-		  <dt>위치</dt>
-		  <dd>{{ session.user_info.location }}</dd>
-		  <dt>직업</dt>
-		  <dd>{{ session.user_info.occupation }}</dd>
-		</dl>
-	</div>
+	<a href="{{ url_for('edit_profile') }}" class="btn btn-default" role="button">
+    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 내 정보 수정</a>&nbsp;
+	<a href="#" class="btn btn-default" role="button">
+    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 패스워드 변경</a>	
+</div>
+
+</div>
+
 {% endblock %}

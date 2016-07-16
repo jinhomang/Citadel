@@ -63,12 +63,13 @@
                 </ul>
               </li> -->
             </ul>
-            <div class="navbar-right" style="display:inline-block; margin: 10px 50px">
+            <div class="navbar-right" style="display:inline-block; margin: 10px 50px; color:white;">
                 {% if not session.user_info %}
-                  <a href="{{ url_for('login') }}" class="btn  btn-success">로그인</a>
+                  <a href="{{ url_for('login') }}" class="btn  btn-success">로그인 <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></a>
                 {% else %}
-                  <a href="{{ url_for('profile') }}">{{ session.user_info.name }}</a> 님, 반갑습니다!
-                  <a href="{{ url_for('logout') }}" class="btn  btn-normal">로그아웃</a>
+                  <a href="{{ url_for('profile') }}">
+                    <span class="glyphicon glyphicon-user"></span> {{ session.user_info.name }}</a> 님, 반갑습니다! &nbsp;&nbsp;&nbsp;
+                  <a href="{{ url_for('logout') }}" class="btn  btn-normal"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 로그아웃</a>
                 {% endif %}
             </div>
           </div>

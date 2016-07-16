@@ -12,7 +12,8 @@
 
 
 {% if form.errors or err %}
-<p class="custom-login-error">정확하지 않은 이메일 또는 패스워드입니다.
+<p class="custom-login-error">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> 정확하지 않은 이메일 또는 패스워드입니다.
   <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 </p>
 {% endif %}
@@ -36,7 +37,7 @@
 </form>
  
 <div class="custom-login-form" style="margin: 12px auto; text-align:center">
-  처음이신가요?  그냥 <a href="{{ url_for('join') }}">가입</a>해보세요.
+  처음이신가요?  그냥 <a href="{{ url_for('join') }}">가입</a>해 보세요.
 </div>
 
 <script type="text/javascript" language="JavaScript">
@@ -72,7 +73,7 @@ $(document).ready(function(){
      
     $inputId.on('keyup', function(){ 
         if($checkbox.is(":checked")){ 
-            setCookie("userInputId", $inputId.val(), 7);
+            setCookie("citadel_user_id", $inputId.val(), 7);
         }
     });
 });
