@@ -30,7 +30,7 @@ dbs = DBsession()
 errorMsg = dict([('database_exception', '데이터베이스 오류가 발생했습니다: '),
 			('user_id_duplicated', '동일한 아이디를 가진 사용자가 이미 존재합니다.'),
 			('user_id_not_exists', '입력하신 아이디가 존재하지 않습니다.'),
-			('wrong_password', '패스워드가 맞지 않습니다.'),
+			('wrong_password', '비밀번호가 틀립니다.'),
 			('thread_not_exists', '해당 쓰레드는 존재하지 않습니다.'),
 			('delete_message_error', '해당 글이 존재하지 않거나, 이 글을 삭제할 권한이 없습니다.')])
 
@@ -47,32 +47,46 @@ def inject_fujs():
 
 # Forms #################################################################################
 
+# validators
 user_id_validators = [validators.Length(min=2, max=64), validators.Email()]
 user_name_validators = [validators.Length(min=2, max=64)]
-password_validators = [validators.Length(min=6, max=128)]
+pwd_validators = [validators.InputRequired(message='설정할 비밀번호를 입력하세요'), validators.Length(min=6, max=128)] 
 
+# forms
 class JoinForm(Form):
 	user_id = TextField('이메일 주소', user_id_validators)
 	name = TextField('이름', user_name_validators)
-	password = PasswordField('패스워드', password_validators)
+	password = PasswordField('비밀번호', pwd_validators)
+	confirm = PasswordField('비밀번호 재입력', \
+		[validators.EqualTo('password', message='비밀번호가 동일하지 않습니다')])
 	submit = SubmitField('가입하기')
 
-class ProfileForm(Form):
+class EditProfileForm(Form):
 	name = TextField('이름', user_name_validators)
 	bio = TextAreaField('바이오그래피', [validators.Length(max=256)])
 	url = TextField('URL', [validators.Length(max=128), validators.URL()])
 	contact = TextField('연락처', [validators.Length(max=32)])
 	location = TextField('지역', [validators.Length(max=32)])
 	picture = TextField('사진', [validators.Length(max=128)])
-	# submit = SubmitField('수정완료')
 
-class UpdatePasswordForm(Form):
-	new_password = PasswordField('새로운 패스워드', password_validators)
-	confirm_password = PasswordField('패스워드 재입력')
+def ComparePassword(pwd=''):
+    message = '입력하신 비밀번호가 틀립니다.'
+    def _comparePassword(form, field):
+        if field.data != pwd:
+            raise validators.ValidationError(message)
+
+    return _comparePassword
+
+class ChangePasswordForm(Form):
+	old_password = PasswordField('현재 비밀번호')
+	new_password = PasswordField('새 비밀번호', pwd_validators)
+	confirm = PasswordField('새 비밀번호 재입력', \
+		[validators.EqualTo('new_password', message='비밀번호가 동일하지 않습니다')])
+	submit = SubmitField('변경')
 
 class LoginForm(Form):
 	user_id = TextField('이메일')
-	password = PasswordField('패스워드')
+	password = PasswordField('비밀번호')
 	submit = SubmitField('로그인')
 
 # class CreateThreadForm(Form):
@@ -143,21 +157,28 @@ def join():
 	if request.method == 'POST' and regist_form.validate():
 		if dbs.query(Member).filter(Member.user_id == regist_form['user_id'].data).count() > 0:
 			error = errorMsg['user_id_duplicated']
-			dbs.close()
+			dbs.close()			
 		else:
 			try:
 				new_member = Member(
 								user_id=regist_form['user_id'].data,
 								name=regist_form['name'].data,
-								nickname=regist_form['name'].data,
 								password=regist_form['password'].data,
-								cgroup='관리자')
-				new_member.profile = Profile()
+								message_count=0,
+								like_received=0)
+				new_profile = Profile(
+							    picture = '',
+							    url = '',
+							    contact = '',
+							    location = '',
+							    bio = '')
+
+				new_profile.owner = new_member
 				dbs.add(new_member)
 				dbs.commit()
 			except Exception as e:
 				error = errorMsg['database_exception'] + str(e)
-				dbs.f()
+				dbs.rollback()
 				raise e
 			else:				
 				return redirect(url_for('main'))	
@@ -165,7 +186,6 @@ def join():
 				dbs.close()
 			
 	return render_template('join.html', form=regist_form, err=error)
-
 
 
 # Login/Logout ##########################################################################
@@ -224,10 +244,9 @@ def edit_profile():
 	if not session.get('user_info'):
 		return redirect(url_for('main'))
 
-	form = ProfileForm(request.form)
-	if request.method == 'POST':	
+	form = EditProfileForm(request.form)
+	if request.method == 'POST' and form.validate():	
 		try:
-			# session['user_info'].name = form['name'].data
 			updated_profile = dbs.query(Profile).filter(Profile.owner_id == session['user_info']['id']).one()
 			updated_profile.picture = form['picture'].data
 			updated_profile.url = form['url'].data
@@ -252,6 +271,35 @@ def edit_profile():
 	return render_template('edit_profile.html', form=form, profile=profile)
 
 
+# Change Password #######################################################################
+@app.route('/change_password', methods = ['GET', 'POST'])
+def change_password():
+	if not session.get('user_info'):
+		return redirect(url_for('main'))
+
+	form = ChangePasswordForm(request.form)
+	if request.method == 'POST':	
+		form['old_password'].validators = [ ComparePassword(pwd=session['user_info']['password']) ]
+		if form.validate():
+			try:
+				member = dbs.query(Member).filter(Member.id == session['user_info']['id']).one()
+				member.password = form['new_password'].data
+				dbs.add(member)
+				dbs.commit()
+
+			except Exception as e:
+				error = errorMsg['database_exception'] + str(e)
+				dbs.rollback()
+				raise e
+			else:
+				return redirect(url_for('profile'))
+			finally:
+				dbs.close()
+	
+	return render_template('change_password.html', form=form)
+
+
+
 # Create thread #########################################################################
 @app.route('/create_thread', methods = ['GET','POST'])
 def create_thread():
@@ -261,14 +309,14 @@ def create_thread():
 	if request.method == 'POST':
 		try:
 			new_thread = Thread()
-			setattr(new_thread, 'title', request.form['ed_title'])
-			setattr(new_thread, 'views', 0)
-			setattr(new_thread, 'replies', 0)			
+			new_thread.title = request.form['ed_title'][0:255]
+			new_thread.views = 0
+			new_thread.replies = 0			
 
 			first_message = Message()
 			first_message.thread = new_thread;
 			first_message.author = dbs.query(Member).filter(session['user_info']['id'] == Member.id).one()
-			first_message.author.message_count +=1
+			first_message.author.message_count += 1
 			first_message.content = request.form['content']
 			first_message.date = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
@@ -287,11 +335,6 @@ def create_thread():
 		return render_template('create_thread.html')
 
 
-# Update thread #########################################################################
-# @app.route('/delete_thread/<id>', methods = ['GET', 'POST'])
-# def delete_thread(id):
-# 	pass
-
 
 # Add message ###########################################################################
 @app.route('/add_message/<thread_id>', methods = ['POST'])
@@ -304,9 +347,9 @@ def add_message(thread_id):
 		new_message.content = request.form['content']
 		new_message.date = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 		new_message.thread = dbs.query(Thread).filter(Thread.id == thread_id).one()
-		new_message.thread.replies +=1 #len(new_message.thread.messages)
+		new_message.thread.replies += 1 
 		new_message.author = dbs.query(Member).filter(session['user_info']['id'] == Member.id).one()
-		new_message.author.message_count +=1
+		new_message.author.message_count += 1
 
 		dbs.add(new_message)
 		dbs.commit()
@@ -381,20 +424,18 @@ def delete_message(thread_id, message_id):
 @app.route('/thread/<id>')
 def show_thread(id):
 	error = None
-	q = dbs.query(Thread).filter(Thread.id == id)
 
+	q = dbs.query(Thread).filter(Thread.id == id)
 	if q.count() == 0:
 		error = errorMsg['thread_not_exists']
 		dbs.close()
 	else:
 		this_thread = q.one();
-
 		thread = alc2json(this_thread)
 		messages = [(alc2json(msg), alc2json(msg.author)) for msg in this_thread.messages]
-		# message_form = AddMessageForm(request.form)
 		dbs.close()
 
-		return render_template('show_thread.html', thread=thread, messages=messages)#, form=message_form)	
+		return render_template('show_thread.html', thread=thread, messages=messages)	
 
 	return redirect('main')
 

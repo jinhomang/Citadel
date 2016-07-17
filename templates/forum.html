@@ -59,7 +59,7 @@
   <tr>
     <td>
         <div class="row">
-          <div class="col-xs-11 col-md-7"><a href="{{ url_for('show_thread', id=thread.id) }}">{{ thread.title }}</a></div>
+          <div class="col-xs-11 col-md-7 message-title"><a href="{{ url_for('show_thread', id=thread.id) }}">{{ thread.title }}</a></div>
           <div class="col-xs-8 col-md-3"> {{ author.name }}<br/><small>{{ first_message.date }}</small> </div>
           <div class="col-xs-3 col-md-2"> <h4><strong>{{ thread.replies }}<strong> <small>{{ thread.views }}<small> </h4></div>
         </div>

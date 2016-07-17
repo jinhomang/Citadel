@@ -35,6 +35,10 @@ img {
     height:auto !important;
 }
 
+.message-title {
+  word-break: break-all;
+}
+
 .message-content {
   min-height: 70px;
   margin-top: 10px;

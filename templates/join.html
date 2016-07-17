@@ -33,10 +33,28 @@
     </dt>
     <dd>
       <div>
-        {{ form.password(class="form-control", placeholder="패스워드는 6글자 이상으로 설정해 주세요") }}
+        {{ form.password(class="form-control", placeholder="비밀번호는 6글자 이상으로 설정해 주세요") }}
       </div>
       {% if form.password.errors %}
         {% for error in form.password.errors  %}
+          <div class="error help-block"><li> {{ error }}</li></div>
+        {% endfor %}
+      {% endif %}
+    </dd>
+  </dl>
+
+  <dl class="form-group">
+    <dt>
+      <div>
+        <label for="{{ form.confirm.id }}">{{ form.confirm.label }}</label>
+      </div>
+    </dt>
+    <dd>
+      <div>
+        {{ form.confirm(class="form-control", placeholder="비밀번호를 다시 한번 입력해주세요") }}
+      </div>
+      {% if form.confirm.errors %}
+        {% for error in form.confirm.errors  %}
           <div class="error help-block"><li> {{ error }}</li></div>
         {% endfor %}
       {% endif %}

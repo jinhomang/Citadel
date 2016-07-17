@@ -14,7 +14,6 @@ class Member(Base):
     message_count = Column(SmallInteger)
     like_received = Column(SmallInteger)
 
-    #__table_args__ = (UniqueConstraint('user_id', 'nickname', name='_user_nickname_uc'),)
     __table_args__ = (UniqueConstraint('user_id', name='_user_id_uc'), 
         UniqueConstraint('name', name='_name_uc'), 
         {'mysql_charset': 'utf8', 'mysql_engine': 'InnoDB'})
@@ -26,7 +25,7 @@ class Member(Base):
 class Profile(Base):
     __tablename__ = 'profile'
     id = Column(Integer, primary_key=True)
-    owner_id = Column(Integer, ForeignKey('member.id'))
+    owner_id = Column(Integer, ForeignKey('member.id'), nullable=False)
     picture = Column(String(256))
     url = Column(String(256)) 
     contact = Column(String(128)) 
@@ -55,8 +54,8 @@ class Message(Base):
     __tablename__='message'
     id = Column(Integer, primary_key=True)
     date = Column(DateTime, nullable=False)
-    thread_id = Column(Integer, ForeignKey('thread.id'))
-    author_id = Column(Integer, ForeignKey('member.id'))
+    thread_id = Column(Integer, ForeignKey('thread.id'), nullable=False)
+    author_id = Column(Integer, ForeignKey('member.id'), nullable=False)
     content = Column(UnicodeText, nullable=False)
 
     thread = relationship("Thread", back_populates='messages')

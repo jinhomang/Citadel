@@ -1,0 +1,93 @@
+[Sun Jul 17 18:09:08.526208 2016] [wsgi:error] [pid 1669] [client 192.168.0.6:52276] mod_wsgi (pid=1669): Exception occurred processing WSGI script '/Users/jinho/Citadel/citadel.wsgi'., referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:09:08.526369 2016] [wsgi:error] [pid 1669] [client 192.168.0.6:52276] Traceback (most recent call last):, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:09:08.526392 2016] [wsgi:error] [pid 1669] [client 192.168.0.6:52276]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 2000, in __call__, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:09:08.529520 2016] [wsgi:error] [pid 1669] [client 192.168.0.6:52276]     return self.wsgi_app(environ, start_response), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:09:08.529564 2016] [wsgi:error] [pid 1669] [client 192.168.0.6:52276]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1991, in wsgi_app, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:09:08.529614 2016] [wsgi:error] [pid 1669] [client 192.168.0.6:52276]     response = self.make_response(self.handle_exception(e)), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:09:08.529628 2016] [wsgi:error] [pid 1669] [client 192.168.0.6:52276]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1567, in handle_exception, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:09:08.529651 2016] [wsgi:error] [pid 1669] [client 192.168.0.6:52276]     reraise(exc_type, exc_value, tb), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:09:08.529662 2016] [wsgi:error] [pid 1669] [client 192.168.0.6:52276]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1988, in wsgi_app, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:09:08.529681 2016] [wsgi:error] [pid 1669] [client 192.168.0.6:52276]     response = self.full_dispatch_request(), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:09:08.529692 2016] [wsgi:error] [pid 1669] [client 192.168.0.6:52276]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1641, in full_dispatch_request, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:09:08.529710 2016] [wsgi:error] [pid 1669] [client 192.168.0.6:52276]     rv = self.handle_user_exception(e), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:09:08.529731 2016] [wsgi:error] [pid 1669] [client 192.168.0.6:52276]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1544, in handle_user_exception, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:09:08.529746 2016] [wsgi:error] [pid 1669] [client 192.168.0.6:52276]     reraise(exc_type, exc_value, tb), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:09:08.529754 2016] [wsgi:error] [pid 1669] [client 192.168.0.6:52276]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1639, in full_dispatch_request, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:09:08.529770 2016] [wsgi:error] [pid 1669] [client 192.168.0.6:52276]     rv = self.dispatch_request(), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:09:08.529779 2016] [wsgi:error] [pid 1669] [client 192.168.0.6:52276]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1625, in dispatch_request, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:09:08.529794 2016] [wsgi:error] [pid 1669] [client 192.168.0.6:52276]     return self.view_functions[rule.endpoint](**req.view_args), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:09:08.529804 2016] [wsgi:error] [pid 1669] [client 192.168.0.6:52276]   File "/Users/jinho/Citadel/citadel.py", line 173, in join, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:09:08.531025 2016] [wsgi:error] [pid 1669] [client 192.168.0.6:52276]     raise e, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:09:08.531093 2016] [wsgi:error] [pid 1669] [client 192.168.0.6:52276] TypeError: Incompatible collection type: Profile is not list-like, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:14:14.146772 2016] [wsgi:error] [pid 1680] [client 192.168.0.6:52801] mod_wsgi (pid=1680): Exception occurred processing WSGI script '/Users/jinho/Citadel/citadel.wsgi'., referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:14:14.146919 2016] [wsgi:error] [pid 1680] [client 192.168.0.6:52801] Traceback (most recent call last):, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:14:14.146950 2016] [wsgi:error] [pid 1680] [client 192.168.0.6:52801]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 2000, in __call__, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:14:14.149840 2016] [wsgi:error] [pid 1680] [client 192.168.0.6:52801]     return self.wsgi_app(environ, start_response), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:14:14.149891 2016] [wsgi:error] [pid 1680] [client 192.168.0.6:52801]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1991, in wsgi_app, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:14:14.149952 2016] [wsgi:error] [pid 1680] [client 192.168.0.6:52801]     response = self.make_response(self.handle_exception(e)), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:14:14.149971 2016] [wsgi:error] [pid 1680] [client 192.168.0.6:52801]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1567, in handle_exception, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:14:14.149999 2016] [wsgi:error] [pid 1680] [client 192.168.0.6:52801]     reraise(exc_type, exc_value, tb), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:14:14.150014 2016] [wsgi:error] [pid 1680] [client 192.168.0.6:52801]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1988, in wsgi_app, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:14:14.150039 2016] [wsgi:error] [pid 1680] [client 192.168.0.6:52801]     response = self.full_dispatch_request(), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:14:14.150053 2016] [wsgi:error] [pid 1680] [client 192.168.0.6:52801]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1641, in full_dispatch_request, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:14:14.150077 2016] [wsgi:error] [pid 1680] [client 192.168.0.6:52801]     rv = self.handle_user_exception(e), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:14:14.150090 2016] [wsgi:error] [pid 1680] [client 192.168.0.6:52801]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1544, in handle_user_exception, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:14:14.150113 2016] [wsgi:error] [pid 1680] [client 192.168.0.6:52801]     reraise(exc_type, exc_value, tb), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:14:14.150126 2016] [wsgi:error] [pid 1680] [client 192.168.0.6:52801]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1639, in full_dispatch_request, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:14:14.150149 2016] [wsgi:error] [pid 1680] [client 192.168.0.6:52801]     rv = self.dispatch_request(), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:14:14.150163 2016] [wsgi:error] [pid 1680] [client 192.168.0.6:52801]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1625, in dispatch_request, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:14:14.150187 2016] [wsgi:error] [pid 1680] [client 192.168.0.6:52801]     return self.view_functions[rule.endpoint](**req.view_args), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:14:14.150202 2016] [wsgi:error] [pid 1680] [client 192.168.0.6:52801]   File "/Users/jinho/Citadel/citadel.py", line 173, in join, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:14:14.151301 2016] [wsgi:error] [pid 1680] [client 192.168.0.6:52801]     raise e, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:14:14.151355 2016] [wsgi:error] [pid 1680] [client 192.168.0.6:52801] TypeError: Incompatible collection type: Profile is not list-like, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:16:27.810451 2016] [wsgi:error] [pid 1694] [client 192.168.0.6:53012] mod_wsgi (pid=1694): Exception occurred processing WSGI script '/Users/jinho/Citadel/citadel.wsgi'., referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:16:27.810642 2016] [wsgi:error] [pid 1694] [client 192.168.0.6:53012] Traceback (most recent call last):, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:16:27.810670 2016] [wsgi:error] [pid 1694] [client 192.168.0.6:53012]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 2000, in __call__, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:16:27.812608 2016] [wsgi:error] [pid 1694] [client 192.168.0.6:53012]     return self.wsgi_app(environ, start_response), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:16:27.812645 2016] [wsgi:error] [pid 1694] [client 192.168.0.6:53012]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1991, in wsgi_app, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:16:27.812687 2016] [wsgi:error] [pid 1694] [client 192.168.0.6:53012]     response = self.make_response(self.handle_exception(e)), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:16:27.812709 2016] [wsgi:error] [pid 1694] [client 192.168.0.6:53012]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1567, in handle_exception, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:16:27.812728 2016] [wsgi:error] [pid 1694] [client 192.168.0.6:53012]     reraise(exc_type, exc_value, tb), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:16:27.812739 2016] [wsgi:error] [pid 1694] [client 192.168.0.6:53012]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1988, in wsgi_app, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:16:27.812755 2016] [wsgi:error] [pid 1694] [client 192.168.0.6:53012]     response = self.full_dispatch_request(), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:16:27.812765 2016] [wsgi:error] [pid 1694] [client 192.168.0.6:53012]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1641, in full_dispatch_request, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:16:27.812781 2016] [wsgi:error] [pid 1694] [client 192.168.0.6:53012]     rv = self.handle_user_exception(e), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:16:27.812791 2016] [wsgi:error] [pid 1694] [client 192.168.0.6:53012]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1544, in handle_user_exception, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:16:27.812806 2016] [wsgi:error] [pid 1694] [client 192.168.0.6:53012]     reraise(exc_type, exc_value, tb), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:16:27.812815 2016] [wsgi:error] [pid 1694] [client 192.168.0.6:53012]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1639, in full_dispatch_request, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:16:27.812831 2016] [wsgi:error] [pid 1694] [client 192.168.0.6:53012]     rv = self.dispatch_request(), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:16:27.812840 2016] [wsgi:error] [pid 1694] [client 192.168.0.6:53012]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1625, in dispatch_request, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:16:27.812856 2016] [wsgi:error] [pid 1694] [client 192.168.0.6:53012]     return self.view_functions[rule.endpoint](**req.view_args), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:16:27.812866 2016] [wsgi:error] [pid 1694] [client 192.168.0.6:53012]   File "/Users/jinho/Citadel/citadel.py", line 173, in join, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:16:27.814164 2016] [wsgi:error] [pid 1694] [client 192.168.0.6:53012]     raise e, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:16:27.814233 2016] [wsgi:error] [pid 1694] [client 192.168.0.6:53012] TypeError: Incompatible collection type: Profile is not list-like, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:26:46.443631 2016] [wsgi:error] [pid 1721] [client 192.168.0.6:54171] mod_wsgi (pid=1721): Exception occurred processing WSGI script '/Users/jinho/Citadel/citadel.wsgi'., referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:26:46.444418 2016] [wsgi:error] [pid 1721] [client 192.168.0.6:54171] Traceback (most recent call last):, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:26:46.444442 2016] [wsgi:error] [pid 1721] [client 192.168.0.6:54171]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 2000, in __call__, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:26:46.454861 2016] [wsgi:error] [pid 1721] [client 192.168.0.6:54171]     return self.wsgi_app(environ, start_response), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:26:46.454902 2016] [wsgi:error] [pid 1721] [client 192.168.0.6:54171]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1991, in wsgi_app, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:26:46.454948 2016] [wsgi:error] [pid 1721] [client 192.168.0.6:54171]     response = self.make_response(self.handle_exception(e)), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:26:46.454962 2016] [wsgi:error] [pid 1721] [client 192.168.0.6:54171]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1567, in handle_exception, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:26:46.454983 2016] [wsgi:error] [pid 1721] [client 192.168.0.6:54171]     reraise(exc_type, exc_value, tb), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:26:46.454993 2016] [wsgi:error] [pid 1721] [client 192.168.0.6:54171]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1988, in wsgi_app, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:26:46.455012 2016] [wsgi:error] [pid 1721] [client 192.168.0.6:54171]     response = self.full_dispatch_request(), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:26:46.455022 2016] [wsgi:error] [pid 1721] [client 192.168.0.6:54171]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1641, in full_dispatch_request, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:26:46.455041 2016] [wsgi:error] [pid 1721] [client 192.168.0.6:54171]     rv = self.handle_user_exception(e), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:26:46.455052 2016] [wsgi:error] [pid 1721] [client 192.168.0.6:54171]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1544, in handle_user_exception, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:26:46.455069 2016] [wsgi:error] [pid 1721] [client 192.168.0.6:54171]     reraise(exc_type, exc_value, tb), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:26:46.455084 2016] [wsgi:error] [pid 1721] [client 192.168.0.6:54171]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1639, in full_dispatch_request, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:26:46.455102 2016] [wsgi:error] [pid 1721] [client 192.168.0.6:54171]     rv = self.dispatch_request(), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:26:46.455113 2016] [wsgi:error] [pid 1721] [client 192.168.0.6:54171]   File "/Users/jinho/Citadel/venv/lib/python2.7/site-packages/flask/app.py", line 1625, in dispatch_request, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:26:46.455130 2016] [wsgi:error] [pid 1721] [client 192.168.0.6:54171]     return self.view_functions[rule.endpoint](**req.view_args), referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:26:46.455142 2016] [wsgi:error] [pid 1721] [client 192.168.0.6:54171]   File "/Users/jinho/Citadel/citadel.py", line 174, in join, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:26:46.455352 2016] [wsgi:error] [pid 1721] [client 192.168.0.6:54171]     raise e, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:26:46.455383 2016] [wsgi:error] [pid 1721] [client 192.168.0.6:54171] TypeError: Incompatible collection type: Profile is not list-like, referer: http://192.168.0.6:505/join
+[Sun Jul 17 18:31:01.960557 2016] [wsgi:error] [pid 1728] [client 192.168.0.6:54717] mod_wsgi (pid=1728): Target WSGI script '/Users/jinho/Citadel/citadel.wsgi' cannot be loaded as Python module.
+[Sun Jul 17 18:31:01.960969 2016] [wsgi:error] [pid 1728] [client 192.168.0.6:54717] mod_wsgi (pid=1728): Exception occurred processing WSGI script '/Users/jinho/Citadel/citadel.wsgi'.
+[Sun Jul 17 18:31:01.961013 2016] [wsgi:error] [pid 1728] [client 192.168.0.6:54717] Traceback (most recent call last):
+[Sun Jul 17 18:31:01.961046 2016] [wsgi:error] [pid 1728] [client 192.168.0.6:54717]   File "/Users/jinho/Citadel/citadel.wsgi", line 9, in <module>
+[Sun Jul 17 18:31:01.961200 2016] [wsgi:error] [pid 1728] [client 192.168.0.6:54717]     from citadel import app as application
+[Sun Jul 17 18:31:01.961282 2016] [wsgi:error] [pid 1728] [client 192.168.0.6:54717]   File "/Users/jinho/Citadel/citadel.py", line 167
+[Sun Jul 17 18:31:01.961294 2016] [wsgi:error] [pid 1728] [client 192.168.0.6:54717]     message_count=0,
+[Sun Jul 17 18:31:01.961301 2016] [wsgi:error] [pid 1728] [client 192.168.0.6:54717]                 ^
+[Sun Jul 17 18:31:01.961308 2016] [wsgi:error] [pid 1728] [client 192.168.0.6:54717] SyntaxError: invalid syntax
