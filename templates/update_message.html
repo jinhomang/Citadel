@@ -8,7 +8,7 @@
 
 {% block body %}
 	{% if session.user_info %}
-	<div class="page-header"> <h4>{{ thread.title }}</h4></div>
+	<div class="page-header message-title"> <h4>{{ thread.title }}</h4></div>
 		{{ macro_editor.form(name='update_message_editor', submit_url=url_for('update_message', thread_id=thread.id, message_id=message_id), cancel_url=url_for('show_thread', id=thread.id), submit_label='수정', submit_icon='glyphicon glyphicon-ok') }}
 		{{ macro_editor.load_content( content | safe ) }}
 	{% else %}

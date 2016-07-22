@@ -27,7 +27,9 @@
 				  <div><label for="{{ form.bio.id }}">{{ form.bio.label }}</label></div>
 				</dt>
 				<dd>
-				  	<div>{{ form.bio(class="form-control", value=profile.bio) }}</div>
+				  	<div>
+				  		<textarea class="form-control" rows="4" id="{{ form.bio.id }}" name="{{ form.bio.name }}">{{ profile.bio }}</textarea>
+				  	</div>
 					{% if form.bio.errors %}
 						{% for error in form.bio.errors  %}
 							<div class="error help-block"><li> {{ error }}</li></div>

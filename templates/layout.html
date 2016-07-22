@@ -9,6 +9,8 @@
 
   <!-- 부트스트랩 -->
   <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+  <!-- 부가적인 테마 -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 
   <!-- Custom styles for this template -->
   <!-- <link href="{{ url_for('static', filename='css/sticky-footer-navbar.css') }}" rel="stylesheet"> -->
@@ -26,8 +28,7 @@
   {% endblock %}
 </head>
 
-<body Onload="dp.SyntaxHighlighter.HighlightAll('code');">
-
+<body>
 {% block nav %}
   <div class="navbar-wrapper">
     <div class="container">
@@ -67,8 +68,7 @@
                 {% if not session.user_info %}
                   <a href="{{ url_for('login') }}" class="btn  btn-success">로그인 <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></a>
                 {% else %}
-                  <a href="{{ url_for('profile') }}">
-                    <span class="glyphicon glyphicon-user"></span> {{ session.user_info.name }}</a> 님, 반갑습니다! &nbsp;&nbsp;&nbsp;
+                  <a href="{{ url_for('profile') }}"><span class="glyphicon glyphicon-user"></span> {{ session.user_info.name }}</a> 님, 반갑습니다! &nbsp;&nbsp;&nbsp;
                   <a href="{{ url_for('logout') }}" class="btn  btn-normal"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 로그아웃</a>
                 {% endif %}
             </div>
@@ -141,9 +141,10 @@
   <!-- FOOTER -->
   <div class="container">
     <footer>
-      <!-- <div class="col-md-8 col-md-offset-2"> -->
-      <p class="pull-right"><a href="#">Back to top</a></p>
-      <p>&copy; 2016 Jinho Mang &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+      <div class="row">
+          <div class="col-xs-12 col-md-12" style="margin-top:150px;">
+          <p>&copy; 2016 Jinho Mang &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+        </div>
     </footer>    
   </div>
 </body>

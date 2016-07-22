@@ -48,23 +48,29 @@ def inject_fujs():
 # Forms #################################################################################
 
 # validators
-user_id_validators = [validators.Length(min=2, max=64), validators.Email()]
-user_name_validators = [validators.Length(min=2, max=64)]
-pwd_validators = [validators.InputRequired(message='설정할 비밀번호를 입력하세요'), validators.Length(min=6, max=128)] 
+user_id_validators = \
+	[validators.InputRequired(message='이메일을 입력하세요'), 
+	validators.Length(min=2, max=64), validators.Email('이메일 형식에 맞지 않습니다')]
+user_name_validators = \
+	[validators.InputRequired(message='이름을 입력하세요'), 
+	validators.Length(min=2, max=64)]
+pwd_validators = \
+	[validators.InputRequired(message='설정할 비밀번호를 입력하세요'), 
+	validators.Length(min=6, max=128)] 
 
 # forms
 class JoinForm(Form):
 	user_id = TextField('이메일 주소', user_id_validators)
 	name = TextField('이름', user_name_validators)
 	password = PasswordField('비밀번호', pwd_validators)
-	confirm = PasswordField('비밀번호 재입력', \
+	confirm = PasswordField('비밀번호 재입력', 
 		[validators.EqualTo('password', message='비밀번호가 동일하지 않습니다')])
 	submit = SubmitField('가입하기')
 
 class EditProfileForm(Form):
 	name = TextField('이름', user_name_validators)
 	bio = TextAreaField('바이오그래피', [validators.Length(max=256)])
-	url = TextField('URL', [validators.Length(max=128), validators.URL()])
+	url = TextField('URL', [validators.Length(max=128)])
 	contact = TextField('연락처', [validators.Length(max=32)])
 	location = TextField('지역', [validators.Length(max=32)])
 	picture = TextField('사진', [validators.Length(max=128)])
@@ -80,7 +86,7 @@ def ComparePassword(pwd=''):
 class ChangePasswordForm(Form):
 	old_password = PasswordField('현재 비밀번호')
 	new_password = PasswordField('새 비밀번호', pwd_validators)
-	confirm = PasswordField('새 비밀번호 재입력', \
+	confirm = PasswordField('새 비밀번호 재입력', 
 		[validators.EqualTo('new_password', message='비밀번호가 동일하지 않습니다')])
 	submit = SubmitField('변경')
 
@@ -102,6 +108,8 @@ class LoginForm(Form):
 # 	content = TextAreaField('내용', [validators.Length(min=1)])
 # 	submit = SubmitField('수정')	
 
+
+
 #########################################################################################
 # @app.teardown_request
 # def session_clear(exception=None):
@@ -109,44 +117,15 @@ class LoginForm(Form):
 #     if exception and session.is_active:
 #         session.rollback()
 
+
+
 # FB ####################################################################################
 @app.route('/fb_test')
 def fb_test():
 	return render_template('fb_test.html')
 
-# Regist ################################################################################
-# @app.route('/regist_user', methods = ['GET', 'POST'])
-# def regist_user():
-# 	error = None
-# 	regist_form = RegistUserForm(request.form)
-# 	if request.method == 'POST' and regist_form.validate():
-# 		if dbs.query(Member).filter(Member.user_id == regist_form['user_id'].data).count() > 0:
-# 			error = errorMsg['user_id_duplicated']
-# 			dbs.close()
-# 		else:
-# 			try:
-# 				new_member = Member(user_id=regist_form['user_id'].data,
-# 								name=regist_form['name'].data,
-# 								nickname=regist_form['nickname'].data,
-# 								password=regist_form['password'].data,
-# 								homepage=regist_form['homepage'].data,
-# 								location=regist_form['location'].data,
-# 								occupation=regist_form['occupation'].data,
-# 								interact=regist_form['interact'].data,
-# 								cgroup='관리자')
-# 				dbs.add(new_member)
-# 				dbs.commit()
-# 			except Exception as e:
-# 				error = errorMsg['database_exception'] + str(e)
-# 				dbs.f()
-# 				raise e
-# 			else:				
-# 				return redirect(url_for('main'))	
-# 			finally: 
-# 				dbs.close()
-			
-# 	else:
-# 		return render_template('regist_user.html', form=regist_form, err=error)
+
+
 @app.route('/join', methods = ['GET', 'POST'])
 def join():
 	if session.get('user_info'):
@@ -271,6 +250,7 @@ def edit_profile():
 	return render_template('edit_profile.html', form=form, profile=profile)
 
 
+
 # Change Password #######################################################################
 @app.route('/change_password', methods = ['GET', 'POST'])
 def change_password():
@@ -292,7 +272,8 @@ def change_password():
 				dbs.rollback()
 				raise e
 			else:
-				return redirect(url_for('profile'))
+				return render_template('notice.html', message='비밀번호 변경을 완료하였습니다.', \
+					next_url=url_for('profile'), label='돌아가기')
 			finally:
 				dbs.close()
 	
@@ -475,16 +456,15 @@ def forum(name, page):
 							start_page_idx=start_page_idx,
 							end_page_idx=end_page_idx, cur_page_idx=cur_page_idx)
 
-@app.route('/editor')
-def editor():
-	return render_template('editor.html')
 
-# Main ##################################################################################
+# main ##################################################################################
 @app.route('/')
 def main():
 	return redirect(url_for('forum', name='unity', page=1))
 
-# run the application
+
+
+# run the application  ##################################################################
 if __name__ == '__main__':
 	app.run()
 

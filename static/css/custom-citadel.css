@@ -49,13 +49,19 @@ img {
 
 .message-content * {
   word-break: break-all;
-  /*word-wrap: break-word;*/
-}
+    /*word-wrap: break-word;*/
+  }
 
 .message-content pre {
-  width: 270px;
+/*  width: 270px;
   word-wrap: break-word;
-  word-break: break-all;
+  word-break: break-all;*/
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-break:break-all; 
 }
 
 .message-content [style*=inline-block],

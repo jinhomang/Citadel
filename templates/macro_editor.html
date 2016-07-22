@@ -30,6 +30,7 @@
 <body>
 
 {% macro form(name='tx_editor_form', submit_url='#', cancel_url='#', hide_title=True, submit_label='확인', hide_cancel=False, cancel_label='취소', initHeight=300, submit_icon='') -%}
+
 <div class="row">
 	<div class="col-xs-12 col-md-12">		        		        
 		<div class="body">
@@ -74,10 +75,15 @@
  -->							
 							<li class="tx-list">
 								<div unselectable="on" id="tx_media" class="tx-media tx-btn-trans">
-									<a href="javascript:;" title="외부컨텐츠" class="tx-text">외부컨텐츠</a>
+									<a href="javascript:;" title="외부 컨텐츠" class="tx-text">외부 컨텐츠</a>
 								</div>
 							</li>
 
+							<li class="tx-list">
+								<div unselectable="on" id="tx_shcode" class="tx-media tx-btn-trans">
+									<a href="javascript:;" title="코드 삽입" class="tx-text">코드 삽입</a>
+								</div>
+							</li>
 <!-- 							<li class="tx-list tx-list-extra">
 								<div unselectable="on" class="tx-btn-nlrbg tx-extra">
 									<a href="javascript:;" class="tx-icon" title="버튼 더보기">버튼 더보기</a>
@@ -424,7 +430,7 @@
 				<!-- 편집영역 시작 -->
 					<!-- 에디터 Start -->
 		<div id="tx_canvas" class="tx-canvas">
-			<div id="tx_loading" class="tx-loading"><div><img src="images/icon/editor/loading2.png" width="113" height="21" align="absmiddle"/></div></div>
+			<div id="tx_loading" class="tx-loading"><div><img src="/static/images/icon/editor/loading2.png" width="113" height="21" align="absmiddle"/></div></div>
 			<div id="tx_canvas_wysiwyg_holder" class="tx-holder" style="display:block;">
 				<iframe id="tx_canvas_wysiwyg" name="tx_canvas_wysiwyg" allowtransparency="true" frameborder="0"></iframe>
 			</div>
@@ -478,7 +484,7 @@
 		<!-- 에디터 끝 -->
 	</div>
 
-	<div class="col-xs-12 col-md-12 text-right" style="margin: 3px;">		        		        
+	<div class="col-xs-12 col-md-12 text-right" style="margin-top: 10px;">		        		        
 		<button type="button" onclick="saveContent()" class="btn btn-success">
 			<span class="{{ submit_icon }}"></span> {{ submit_label }}</button>
 		{% if hide_cancel==False %}
@@ -545,6 +551,7 @@
 	});
 
 	Editor.checkMobile();	
+
 </script>
 
 <!-- Sample: Saving Contents -->

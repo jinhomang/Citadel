@@ -49,6 +49,7 @@ try {
 	// ignore error when loaded from build script
 }
 
+
 for (var i = 0; i < CORE_FILES.length; i++) {
 	if (CORE_FILES[i]) {
 		var src = basePath + CORE_FILES[i] + '?v=' + new Date().getTime();

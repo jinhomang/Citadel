@@ -13,21 +13,28 @@
 <script type="text/javascript" src="/static/sh/scripts/shBrushCpp.js"></script>
 <script type="text/javascript" src="/static/sh/scripts/shBrushCSharp.js"></script>
 <script type="text/javascript" src="/static/sh/scripts/shBrushCss.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushDelphi.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushDiff.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushGroovy.js"></script>
+<!-- <script type="text/javascript" src="/static/sh/scripts/shBrushDelphi.js"></script> -->
+<!-- <script type="text/javascript" src="/static/sh/scripts/shBrushDiff.js"></script> -->
+<!-- <script type="text/javascript" src="/static/sh/scripts/shBrushGroovy.js"></script> -->
 <script type="text/javascript" src="/static/sh/scripts/shBrushJava.js"></script>
 <script type="text/javascript" src="/static/sh/scripts/shBrushJScript.js"></script>
 <script type="text/javascript" src="/static/sh/scripts/shBrushPhp.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushPlain.js"></script>
+<!-- <script type="text/javascript" src="/static/sh/scripts/shBrushPlain.js"></script> -->
 <script type="text/javascript" src="/static/sh/scripts/shBrushPython.js"></script>
 <script type="text/javascript" src="/static/sh/scripts/shBrushRuby.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushScala.js"></script>
+<!-- <script type="text/javascript" src="/static/sh/scripts/shBrushScala.js"></script> -->
 <script type="text/javascript" src="/static/sh/scripts/shBrushSql.js"></script>
-<script type="text/javascript" src="/static/sh/scripts/shBrushVb.js"></script>
+<!-- <script type="text/javascript" src="/static/sh/scripts/shBrushVb.js"></script> -->
 <script type="text/javascript" src="/static/sh/scripts/shBrushXml.js"></script>
 <link type="text/css" rel="stylesheet" href="/static/sh/styles/shCore.css">
 <link type="text/css" rel="stylesheet" href="/static/sh/styles/shThemeDefault.css">
-<script type="text/javascript"> SyntaxHighlighter.all(); </script>
+<script type="text/javascript"> 
+    SyntaxHighlighter.defaults['toolbar'] = false; //toolbar를 기본적으로 비활성화합니다.
+    SyntaxHighlighter.defaults['smart-tabs'] = true; //탭 사이즈를 자동조절합니다.
+    SyntaxHighlighter.defaults['first-line'] = 1; //맨 처음 시작 라인은 1로 설정합니다. 
+    SyntaxHighlighter.config.tagName = 'textarea'; //textarea 태그를 pre처럼 인식하게 합니다.
+    SyntaxHighlighter.config.bloggerMode = true; 
+	SyntaxHighlighter.all(); 
+</script>
 {%- endmacro %}
 </html>

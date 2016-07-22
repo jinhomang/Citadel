@@ -155,6 +155,7 @@ var CORE_FILES = [
 
 	/** each > embeder */
 	"trex/embeder/media.js",
+	"trex/embeder/shcode.js",
 
 	/** each > module */
 	"trex/modules/blockingunload.js",
