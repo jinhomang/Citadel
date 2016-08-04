@@ -1,1 +1,1 @@
-web:gunicorn app:citadel
+web: gunicorn app:citadel
