@@ -19,3 +19,13 @@ app.config.from_object(__name__)
 @app.route('/hello')
 def sayhello():
 	return '<h1>Hello Flask, Hello Heroku!!!</h1>'
+
+# main ##################################################################################
+@app.route('/')
+def main():
+	return '<h1>This is my heroku test. <br/>이것은 헤로쿠 테스트입니다.</h1>'
+
+
+# run the application  ##################################################################
+if __name__ == '__main__':
+	app.run()
