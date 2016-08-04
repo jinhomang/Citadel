@@ -4,8 +4,9 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 # All the importers #####################################################################
+import json
 from datetime import datetime
-from flask import Flask, request, redirect, url_for, render_template, flash, session, abort
+from flask import Flask, request, redirect, url_for, make_response, render_template, flash, session, abort
 from wtforms import Form, TextField, BooleanField, PasswordField, \
 HiddenField, SubmitField, TextAreaField, validators
 
@@ -31,7 +32,7 @@ errorMsg = dict([('database_exception', '데이터베이스 오류가 발생했�
 			('user_id_duplicated', '동일한 아이디를 가진 사용자가 이미 존재합니다.'),
 			('user_id_not_exists', '입력하신 아이디가 존재하지 않습니다.'),
 			('wrong_password', '비밀번호가 틀립니다.'),
-			('thread_not_exists', '해당 쓰레드는 존재하지 않습니다.'),
+			#('thread_not_exists', '해당 쓰레드는 존재하지 않습니다.'),
 			('delete_message_error', '해당 글이 존재하지 않거나, 이 글을 삭제할 권한이 없습니다.')])
 
 
@@ -50,30 +51,31 @@ def inject_fujs():
 # validators
 user_id_validators = \
 	[validators.InputRequired(message='이메일을 입력하세요'), 
-	validators.Length(min=2, max=64), validators.Email('이메일 형식에 맞지 않습니다')]
+	validators.Length(min=2, max=64), validators.Email('이메일 형식에 맞지 않습니다.')]
 user_name_validators = \
 	[validators.InputRequired(message='이름을 입력하세요'), 
-	validators.Length(min=2, max=64)]
+	validators.Length(min=2, max=64),
+	validators.Regexp(regex=u'^[a-zA-Z0-9\u3131-\u3163\uac00-\ud7a3]{0,}$',message='한글, 영문, 숫자만 입력이 가능하며 공백이 없어야 합니다.')]
 pwd_validators = \
-	[validators.InputRequired(message='설정할 비밀번호를 입력하세요'), 
+	[validators.InputRequired(message='설정할 비밀번호를 입력하세요.'), 
 	validators.Length(min=6, max=128)] 
 
 # forms
 class JoinForm(Form):
 	user_id = TextField('이메일 주소', user_id_validators)
-	name = TextField('이름', user_name_validators)
+	name = TextField('이름(별명)', user_name_validators)
 	password = PasswordField('비밀번호', pwd_validators)
 	confirm = PasswordField('비밀번호 재입력', 
-		[validators.EqualTo('password', message='비밀번호가 동일하지 않습니다')])
+		[validators.EqualTo('password', message='비밀번호가 동일하지 않습니다.')])
 	submit = SubmitField('가입하기')
 
 class EditProfileForm(Form):
-	name = TextField('이름', user_name_validators)
+	name = TextField('이름(별명)', user_name_validators)
 	bio = TextAreaField('바이오그래피', [validators.Length(max=256)])
-	url = TextField('URL', [validators.Length(max=128)])
+	url = TextField('URL', [validators.Length(max=256)])
 	contact = TextField('연락처', [validators.Length(max=32)])
 	location = TextField('지역', [validators.Length(max=32)])
-	picture = TextField('사진', [validators.Length(max=128)])
+	picture = TextField('사진', [validators.Length(max=256)])
 
 def ComparePassword(pwd=''):
     message = '입력하신 비밀번호가 틀립니다.'
@@ -87,27 +89,13 @@ class ChangePasswordForm(Form):
 	old_password = PasswordField('현재 비밀번호')
 	new_password = PasswordField('새 비밀번호', pwd_validators)
 	confirm = PasswordField('새 비밀번호 재입력', 
-		[validators.EqualTo('new_password', message='비밀번호가 동일하지 않습니다')])
+		[validators.EqualTo('new_password', message='비밀번호가 동일하지 않습니다.')])
 	submit = SubmitField('변경')
 
 class LoginForm(Form):
 	user_id = TextField('이메일')
 	password = PasswordField('비밀번호')
 	submit = SubmitField('로그인')
-
-# class CreateThreadForm(Form):
-# 	title = TextField('제목', [validators.Length(min=1, max=32)])
-# 	content = TextAreaField('내용', [validators.Length(min=1)])
-# 	submit = SubmitField('생성')
-
-# class AddMessageForm(Form):
-# 	content = TextAreaField('댓글', [validators.Length(min=1)])
-# 	submit = SubmitField('추가')	
-
-# class UpdatesMessageForm(Form):
-# 	content = TextAreaField('내용', [validators.Length(min=1)])
-# 	submit = SubmitField('수정')	
-
 
 
 #########################################################################################
@@ -118,6 +106,11 @@ class LoginForm(Form):
 #         session.rollback()
 
 
+# FB ####################################################################################
+@app.route('/hello')
+def sayhello():
+	return '<h1>Hello Flask, Hello Heroku!</h1>'
+
 
 # FB ####################################################################################
 @app.route('/fb_test')
@@ -125,7 +118,7 @@ def fb_test():
 	return render_template('fb_test.html')
 
 
-
+# Join ##################################################################################
 @app.route('/join', methods = ['GET', 'POST'])
 def join():
 	if session.get('user_info'):
@@ -167,6 +160,7 @@ def join():
 	return render_template('join.html', form=regist_form, err=error)
 
 
+
 # Login/Logout ##########################################################################
 def alc2json(row):
     return dict([(col, getattr(row,col)) for col in row.__table__.columns.keys()])
@@ -202,6 +196,7 @@ def logout():
 	return redirect(url_for('main'))
 
 
+
 # View profile ##########################################################################
 @app.route('/profile')
 def profile():
@@ -215,6 +210,7 @@ def profile():
 	dbs.close()
 
 	return render_template('profile.html', profile=profile)
+
 
 
 # Edit profile ##########################################################################
@@ -246,7 +242,7 @@ def edit_profile():
 	else:
 		profile = alc2json(dbs.query(Profile).filter(Profile.owner_id == session['user_info']['id']).one())
 		dbs.close()
-		
+
 	return render_template('edit_profile.html', form=form, profile=profile)
 
 
@@ -345,6 +341,7 @@ def add_message(thread_id):
 	return redirect(url_for('show_thread', id=thread_id))
 
 
+
 # Update message ########################################################################
 @app.route('/update_message/<thread_id>/<message_id>', methods = ['GET', 'POST'])
 def update_message(thread_id, message_id):
@@ -405,20 +402,54 @@ def delete_message(thread_id, message_id):
 @app.route('/thread/<id>')
 def show_thread(id):
 	error = None
+	try:
+		this_thread = dbs.query(Thread).filter(Thread.id == id).one();
 
-	q = dbs.query(Thread).filter(Thread.id == id)
-	if q.count() == 0:
-		error = errorMsg['thread_not_exists']
-		dbs.close()
-	else:
-		this_thread = q.one();
+		dict_views = {}
+		add_cookie = False
+		cookie_val = request.cookies.get('views')
+		if cookie_val:
+			dict_views = json.loads(cookie_val)
+			if not dict_views.get(str(this_thread.id)):
+				this_thread.views +=1
+				dict_views[this_thread.id]=1
+				dbs.add(this_thread)
+				dbs.commit()
+				add_cookie = True							
+			else:
+				add_cookie = False
+		else:
+			this_thread.views +=1
+			dict_views[this_thread.id]=1
+			dbs.add(this_thread)
+			dbs.commit()
+			add_cookie = True							
+					
+
 		thread = alc2json(this_thread)
-		messages = [(alc2json(msg), alc2json(msg.author)) for msg in this_thread.messages]
+		messages = [(alc2json(msg), alc2json(msg.author),\
+		 			alc2json(dbs.query(Profile).filter(Profile.owner_id == msg.author.id).one()))\
+		 			for msg in this_thread.messages]
+
+		profile = None;
+		if session.get('user_info'):
+			profile = alc2json(dbs.query(Profile).filter(Profile.owner_id == session['user_info']['id']).one())
+
+	except Exception as e:
+		error = errorMsg['database_exception'] + str(e)	
+		dbs.rollback()
+		raise e
+
+	else:		
+		resp = make_response(render_template('show_thread.html', thread=thread, messages=messages, profile=profile))
+		if add_cookie:
+			json_data = json.dumps(dict_views, ensure_ascii=False)
+			resp.set_cookie('views', json_data)
+	 	return resp
+	 	# return render_template('show_thread.html', thread=thread, messages=messages, profile=profile)
+
+	finally:
 		dbs.close()
-
-		return render_template('show_thread.html', thread=thread, messages=messages)	
-
-	return redirect('main')
 
 
 # Show thread list ######################################################################
@@ -460,7 +491,7 @@ def forum(name, page):
 # main ##################################################################################
 @app.route('/')
 def main():
-	return redirect(url_for('forum', name='unity', page=1))
+	return redirect(url_for('forum', name='아무개', page=1))
 
 
 

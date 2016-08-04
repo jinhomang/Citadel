@@ -30,7 +30,7 @@ class Profile(Base):
     url = Column(String(256)) 
     contact = Column(String(128)) 
     location = Column(String(128))
-    bio = Column(String(1024))  
+    bio = Column(String(256))  
 
     owner = relationship("Member", back_populates='profile')
 
