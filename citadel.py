@@ -20,11 +20,11 @@ DEBUG = True
 SECRET_KEY = 'development key'
 
 # db ####################################################################################
-engine = create_engine('mysql://root:jh781208@localhost/citadel?charset=utf8&use_unicode=0')
-Base.metadata.bind = engine
+# engine = create_engine('mysql://root:jh781208@localhost/citadel?charset=utf8&use_unicode=0')
+# Base.metadata.bind = engine
 
-DBsession = sessionmaker(bind=engine)
-dbs = DBsession()
+# DBsession = sessionmaker(bind=engine)
+# dbs = DBsession()
 
 
 # error messages ########################################################################
